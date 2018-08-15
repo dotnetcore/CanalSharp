@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup Label="Package">
+    <Description>C# client for canal. https://github.com/alibaba/canal</Description>
+    <Copyright></Copyright>
+    <PackageLicenseUrl>https://github.com/Canal4Net/Canal4Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Canal4Net/Canal4Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Canal4Net/Canal4Net.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>canal;mysql;binlog</PackageTags>
+    <Company>Canal4Net Org.</Company>
+    <Authors>stulzq,WithLin</Authors>
+  </PropertyGroup>
+</Project>
