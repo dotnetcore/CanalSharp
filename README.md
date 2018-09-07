@@ -1,2 +1,2 @@
 # canal-client-csharp
-C# client for canal. https://github.com/alibaba/canal
+The .NET canal client for Alibaba canal https://github.com/alibaba/canal
