@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.UnitTests", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Abstract", "src\Canal.Csharp.Abstract\CanalSharp.Abstract.csproj", "{C61A468E-66C4-4915-9C2C-91936EB99F2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Core", "src\Canal.Csharp.Core\CanalSharp.Core.csproj", "{E33BCF38-D450-4AFE-B409-E6E7C0251479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Client", "src\Canal.Csharp.Core\CanalSharp.Client.csproj", "{E33BCF38-D450-4AFE-B409-E6E7C0251479}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Protocol", "src\Canal.Csharp.Protocol\CanalSharp.Protocol.csproj", "{B9782080-16BD-4328-A394-3EC8D9B49326}"
 EndProject

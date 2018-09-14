@@ -1,4 +1,5 @@
 ﻿using System;
+using Canal.Csharp.Protocol;
 using CanalSharp.Protocol;
 
 namespace CanalSharp.Abstract
