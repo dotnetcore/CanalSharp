@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Client", "src\Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Protocol", "src\CanalSharp.Protocol\CanalSharp.Protocol.csproj", "{B9782080-16BD-4328-A394-3EC8D9B49326}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanalSharp.Common", "src\CanalSharp.Common\CanalSharp.Common.csproj", "{B583684C-4E2F-42A5-8F08-1E3C4EE4C586}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{B9782080-16BD-4328-A394-3EC8D9B49326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9782080-16BD-4328-A394-3EC8D9B49326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9782080-16BD-4328-A394-3EC8D9B49326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{C61A468E-66C4-4915-9C2C-91936EB99F2A} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 		{E33BCF38-D450-4AFE-B409-E6E7C0251479} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 		{B9782080-16BD-4328-A394-3EC8D9B49326} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
+		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FD9B9146-8418-4F80-A666-9B47BE4F9C9C}

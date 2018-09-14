@@ -4,4 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DotNetty.Codecs.Protobuf" Version="0.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CanalSharp.Protocol\CanalSharp.Protocol.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Com.Alibaba.Otter.Canal.Protocol;
 using Google.Protobuf;
 
-namespace Canal.Csharp.Protocol
+namespace CanalSharp.Protocol
 {
     [Serializable]
     public class Message

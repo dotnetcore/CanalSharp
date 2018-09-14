@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Canal.Csharp.Protocol
+namespace CanalSharp.Protocol
 {
     [Serializable]
     public class ClientIdentity
