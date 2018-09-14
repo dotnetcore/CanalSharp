@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Canal.Csharp.Protocol.Position
+﻿namespace Canal.Csharp.Protocol.Position
 {
     public class TimePosition: Position
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Canal.Csharp.Protocol.Exception
+﻿namespace Canal.Csharp.Protocol.Exception
 {
     public class CanalClientException : System.Exception
     {

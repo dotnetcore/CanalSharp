@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Canal.Csharp.Abstract.Exception;
 using Canal.Csharp.Protocol;
 
 namespace Canal.Csharp.Abstract

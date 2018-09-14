@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Canal.Csharp.Protocol.Position
+﻿namespace Canal.Csharp.Protocol.Position
 {
     public class LogPosition: Position
     {
@@ -55,11 +51,6 @@ namespace Canal.Csharp.Protocol.Position
                 return false;
             }
             return true;
-        }
-
-        public boolean equals(Object obj)
-        {
-           
         }
     }
 }
