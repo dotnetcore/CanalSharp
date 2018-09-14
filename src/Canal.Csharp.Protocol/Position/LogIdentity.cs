@@ -5,7 +5,7 @@ namespace Canal.Csharp.Protocol.Position
     public class LogIdentity:Position
     {
         // 链接服务器的地址
-        public IPAddress SourceAddress { get; set; }                         
+        public SocketAddress SourceAddress { get; set; }                         
         // 对应的slaveId
         public long? SlaveId { get; set; }
 
@@ -14,7 +14,7 @@ namespace Canal.Csharp.Protocol.Position
 
         }
 
-        public LogIdentity(IPAddress sourceAddress,long slaveId)
+        public LogIdentity(SocketAddress sourceAddress,long slaveId)
         {
             SourceAddress = sourceAddress;
             SlaveId = slaveId;
