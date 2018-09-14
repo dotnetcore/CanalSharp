@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CanalSharp.Common\CanalSharp.Common.csproj" />
     <ProjectReference Include="..\CanalSharp.Protocol\CanalSharp.Protocol.csproj" />
   </ItemGroup>
 
