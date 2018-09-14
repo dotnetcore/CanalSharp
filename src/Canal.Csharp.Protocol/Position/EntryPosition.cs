@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Canal.Csharp.Protocol.Position
+namespace CanalSharp.Protocol.Position
 {
     public class EntryPosition:TimePosition
     {

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Canal.Csharp.Protocol\Canal.Csharp.Protocol.csproj" />
+    <ProjectReference Include="..\Canal.Csharp.Protocol\CanalSharp.Protocol.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.TestPlatform.CommunicationUtilities">

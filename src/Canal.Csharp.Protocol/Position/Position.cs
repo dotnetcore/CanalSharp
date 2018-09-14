@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Canal.Csharp.Protocol.Position
+namespace CanalSharp.Protocol.Position
 {
     /**
     * 事件唯一标示

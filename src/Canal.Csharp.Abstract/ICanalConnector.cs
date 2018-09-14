@@ -1,7 +1,7 @@
 ﻿using System;
-using Canal.Csharp.Protocol;
+using CanalSharp.Protocol;
 
-namespace Canal.Csharp.Abstract
+namespace CanalSharp.Abstract
 {
    public interface ICanalConnector
     {

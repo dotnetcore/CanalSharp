@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace Canal.Csharp.Abstract
+namespace CanalSharp.Abstract
 {
     public interface ICanalNodeAccessStrategy
     {

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Canal.Csharp.Protocol.Position
+namespace CanalSharp.Protocol.Position
 {
     public class LogIdentity:Position
     {

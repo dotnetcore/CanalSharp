@@ -1,4 +1,4 @@
-﻿namespace Canal.Csharp.Protocol.Exception
+﻿namespace CanalSharp.Protocol.Exception
 {
     public class CanalClientException : System.Exception
     {
