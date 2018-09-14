@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Com.Alibaba.Otter.Canal.Protocol;
 using Google.Protobuf;
 
 namespace Canal.Csharp.Protocol
 {
-
+    [Serializable]
     public class Message
     {
         public long Id { get; set; }
