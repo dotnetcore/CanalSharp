@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Canal.Csharp.Abstract.Logging
+namespace CanalSharp.Common.Logging
 {
     public interface ILogger
     {
@@ -10,7 +10,7 @@ namespace Canal.Csharp.Abstract.Logging
 
         void Warning(String message);
 
-        void Error(String message, Exception exception);
+        void Error(String message, System.Exception exception);
 
         void Trace(String message);
     }

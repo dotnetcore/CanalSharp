@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CanalSharp.Common.Logging;
 
 namespace CanalSharp.Common.Alarm.Impl
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Canal.Csharp.Abstract.Logging
+namespace CanalSharp.Common.Logging
 {
     public class NullLoggerFactory : ILoggerFactory
     {

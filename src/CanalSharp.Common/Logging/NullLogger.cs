@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Canal.Csharp.Abstract.Logging
+namespace CanalSharp.Common.Logging
 {
     internal class NullLogger : ILogger
     {
@@ -16,7 +16,7 @@ namespace Canal.Csharp.Abstract.Logging
         {
         }
 
-        public void Error(String message, Exception exception)
+        public void Error(String message, System.Exception exception)
         {
         }
 

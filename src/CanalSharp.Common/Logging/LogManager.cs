@@ -1,7 +1,6 @@
 ﻿using System;
-using Servicecomb.Saga.Omega.Abstractions.Logging;
 
-namespace Canal.Csharp.Abstract.Logging
+namespace CanalSharp.Common.Logging
 {
     public static class LogManager
     {

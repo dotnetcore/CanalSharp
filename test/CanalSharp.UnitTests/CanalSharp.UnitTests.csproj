@@ -13,4 +13,10 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CanalSharp.Client\CanalSharp.Client.csproj" />
+    <ProjectReference Include="..\..\src\CanalSharp.Common\CanalSharp.Common.csproj" />
+    <ProjectReference Include="..\..\src\CanalSharp.Protocol\CanalSharp.Protocol.csproj" />
+  </ItemGroup>
+
 </Project>

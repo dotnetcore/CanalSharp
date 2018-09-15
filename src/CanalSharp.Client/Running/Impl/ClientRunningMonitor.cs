@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Canal.Csharp.Abstract.Common;
+﻿using CanalSharp.Common;
 
-namespace Canal.Csharp.Core.Running
+namespace CanalSharp.Client.Running.Impl
 {
     public class ClientRunningMonitor: AbstractCanalLifeCycle
     {
