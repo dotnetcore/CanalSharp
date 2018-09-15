@@ -1,8 +1,6 @@
 using System;
-using System.Net;
 using CanalSharp.Client;
 using CanalSharp.Client.Impl;
-using CanalSharp.Common.Utils;
 using Xunit;
 
 namespace Canal4Net.UnitTests
