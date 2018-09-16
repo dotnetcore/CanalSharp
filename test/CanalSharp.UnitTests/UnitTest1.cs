@@ -1,4 +1,5 @@
 using System;
+using System.Net.Sockets;
 using CanalSharp.Client;
 using CanalSharp.Client.Impl;
 using Xunit;

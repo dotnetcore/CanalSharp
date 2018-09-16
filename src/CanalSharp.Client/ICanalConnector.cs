@@ -84,7 +84,7 @@ namespace CanalSharp.Client
         /// <param name="timeout"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        Message GetWithoutAck(int batchSize, long timeout, TimeSpan unit);
+        Message GetWithoutAck(int batchSize, long? timeout, int? unit);
 
         /// <summary>
         /// 进行 batch id 的确认。确认之后，小于等于此 batchId 的 Message 都会被确认。

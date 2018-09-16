@@ -5,6 +5,7 @@
 #pragma warning disable 1591, 0612, 3021
 #region Designer generated code
 
+using System.Text;
 using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
@@ -179,7 +180,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int MagicNumberFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int MagicNumber {
-      get { return magicNumberPresentCase_ == MagicNumberPresentOneofCase.MagicNumber ? (int) magicNumberPresent_ : 0; }
+      get { return magicNumberPresentCase_ == MagicNumberPresentOneofCase.MagicNumber ? (int) magicNumberPresent_ : 17; }
       set {
         magicNumberPresent_ = value;
         magicNumberPresentCase_ = MagicNumberPresentOneofCase.MagicNumber;
@@ -190,7 +191,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int VersionFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Version {
-      get { return versionPresentCase_ == VersionPresentOneofCase.Version ? (int) versionPresent_ : 0; }
+      get { return versionPresentCase_ == VersionPresentOneofCase.Version ? (int) versionPresent_ : 1; }
       set {
         versionPresent_ = value;
         versionPresentCase_ = VersionPresentOneofCase.Version;
@@ -212,7 +213,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int CompressionFieldNumber = 4;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Com.Alibaba.Otter.Canal.Protocol.Compression Compression {
-      get { return compressionPresentCase_ == CompressionPresentOneofCase.Compression ? (global::Com.Alibaba.Otter.Canal.Protocol.Compression) compressionPresent_ : 0; }
+      get { return compressionPresentCase_ == CompressionPresentOneofCase.Compression ? (global::Com.Alibaba.Otter.Canal.Protocol.Compression) compressionPresent_ : Compression.None; }
       set {
         compressionPresent_ = value;
         compressionPresentCase_ = CompressionPresentOneofCase.Compression;
@@ -650,7 +651,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int CommunicationEncodingFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string CommunicationEncoding {
-      get { return communicationEncodingPresentCase_ == CommunicationEncodingPresentOneofCase.CommunicationEncoding ? (string) communicationEncodingPresent_ : ""; }
+      get { return communicationEncodingPresentCase_ == CommunicationEncodingPresentOneofCase.CommunicationEncoding ? (string) communicationEncodingPresent_ : Encoding.UTF8.ToString(); }
       set {
         communicationEncodingPresent_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
         communicationEncodingPresentCase_ = CommunicationEncodingPresentOneofCase.CommunicationEncoding;
@@ -2057,7 +2058,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Timeout {
-      get { return timeoutPresentCase_ == TimeoutPresentOneofCase.Timeout ? (long) timeoutPresent_ : 0L; }
+      get { return timeoutPresentCase_ == TimeoutPresentOneofCase.Timeout ? (long) timeoutPresent_ : -1L; }
       set {
         timeoutPresent_ = value;
         timeoutPresentCase_ = TimeoutPresentOneofCase.Timeout;
@@ -2071,7 +2072,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Unit {
-      get { return unitPresentCase_ == UnitPresentOneofCase.Unit ? (int) unitPresent_ : 0; }
+      get { return unitPresentCase_ == UnitPresentOneofCase.Unit ? (int) unitPresent_ : 2; }
       set {
         unitPresent_ = value;
         unitPresentCase_ = UnitPresentOneofCase.Unit;

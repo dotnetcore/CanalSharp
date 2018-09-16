@@ -21,16 +21,21 @@ namespace CanalSharp.Protocol
             Entries = entries ?? new List<Entry>();
             Raw = false;
         }
+
+        public Message(long id)
+        {
+            Id = id;
+        }
         public Message(long id, bool raw, object entries)
         {
             Id = id;
             if (raw)
             {
-                RawEntries = (List<ByteString>) (entries ?? new List<ByteString>());
+                RawEntries = (List<ByteString>)(entries ?? new List<ByteString>());
             }
             else
             {
-                Entries = (List<Entry>) (entries ?? new List<Entry>());
+                Entries = (List<Entry>)(entries ?? new List<Entry>());
             }
         }
     }

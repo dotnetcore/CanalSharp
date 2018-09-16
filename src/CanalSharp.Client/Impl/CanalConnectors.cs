@@ -1,7 +1,4 @@
-﻿using System.Net;
-using Canal.Csharp.Core;
-
-namespace CanalSharp.Client.Impl
+﻿namespace CanalSharp.Client.Impl
 {
     public class CanalConnectors
     {
