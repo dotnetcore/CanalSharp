@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using CanalSharp.Common.Logging;
 using CanalSharp.Protocol;
@@ -62,8 +63,8 @@ namespace CanalSharp.Client.Impl
 
 
 
-        private IByteBuffer readHeader = Unpooled.Buffer(4);
-        private IByteBuffer writeHeader = Unpooled.Buffer(4);
+        private IByteBuffer readHeader = Unpooled.Buffer(1024);
+        private IByteBuffer writeHeader = Unpooled.Buffer(1024);
 
         private IChannel _clientChannel;
         private IChannel _testChannel;
@@ -100,7 +101,7 @@ namespace CanalSharp.Client.Impl
             _clientIdentity = new ClientIdentity(destination, (short)1001);
         }
 
-        public async void Connect()
+        public  void Connect()
         {
             if (_connected)
             {
@@ -113,7 +114,7 @@ namespace CanalSharp.Client.Impl
                 return;
             }
 
-            await DoConnect();
+             DoConnect().Wait();
             if (_filter != null)
             { // 如果存在条件，说明是自动切换，基于上一次的条件订阅一次
                 Subscribe(_filter);
@@ -195,20 +196,22 @@ namespace CanalSharp.Client.Impl
 
         public Message GetWithoutAck(int batchSize)
         {
-            throw new NotImplementedException();
+           return GetWithoutAck(batchSize, null, null);
         }
 
-        public Message GetWithoutAck(int batchSize, long? timeout, int? unit)
+        public  Message GetWithoutAck(int batchSize, long? timeout, int? unit)
         {
             //waitClientRunning();
-            if (!_running)
-            {
-                return null;
-            }
+            //if (!_running)
+            //{
+            //    return null;
+            //}
 
             try
             {
-                var size = (batchSize <= 0) ? 1000 : batchSize;
+                lock (this)
+                {
+                    var size = (batchSize <= 0) ? 1000 : batchSize;
                 // -1代表不做timeout控制
                 var time = (timeout == null || timeout < 0) ? -1 : timeout;
                 if (unit == null)
@@ -230,9 +233,14 @@ namespace CanalSharp.Client.Impl
                     Body = get.ToByteString()
                 }.ToByteArray();
 
-                WriteWithHeader(_channel, packet);
+                WriteWithHeaderA(_clientChannel, packet);
+                Monitor.Wait(this);
+                }
+
+
 
                 return _message;
+
 
             }
             catch (IOException e)
@@ -269,17 +277,15 @@ namespace CanalSharp.Client.Impl
                 .Channel<TcpSocketChannel>()
                 .Option(ChannelOption.SoTimeout, SoTimeout)
                 .Option(ChannelOption.TcpNodelay, true)
+                .Option(ChannelOption.SoKeepalive, true)
                 .Option(ChannelOption.Allocator, UnpooledByteBufferAllocator.Default)
                 .Handler(new ActionChannelInitializer<ISocketChannel>(channel =>
                 {
                     var pipeline = channel.Pipeline;
                     pipeline.AddLast(nameof(SimpleCanalConnector), this);
                 }));
-            _clientChannel =await bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse(Address), Port));
-            var _testChannel = _clientChannel;
-            _testChannel.Pipeline.Remove(this);
-            _testChannel.Pipeline.AddLast(new Test());
-        }
+            _clientChannel =await bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse(Address), Port)).ConfigureAwait(false);
+       }
 
         private void WaitClientRunning()
         {
@@ -294,6 +300,18 @@ namespace CanalSharp.Client.Impl
                 writeHeader.Clear();
                 writeHeader.WriteInt(body.Length);
                 channel.WriteAsync(writeHeader);
+                channel.WriteAndFlushAsync(Unpooled.WrappedBuffer(body)).Wait();
+
+            }
+        }
+
+        private void WriteWithHeaderA(IChannel channel, byte[] body)
+        {
+            lock (_writeDataLock)
+            {
+                readHeader.Clear();
+                readHeader.WriteInt(body.Length);
+                channel.WriteAsync(readHeader);
                 channel.WriteAndFlushAsync(Unpooled.WrappedBuffer(body)).Wait();
 
             }
@@ -330,7 +348,7 @@ namespace CanalSharp.Client.Impl
                             NetWriteTimeout = IdleTimeout
                         };
 
-                        WriteWithHeader(_testChannel, new Packet()
+                        WriteWithHeader(_clientChannel, new Packet()
                         {
                             Type = PacketType.Clientauthentication,
                             Body = ca.ToByteString()
@@ -345,6 +363,7 @@ namespace CanalSharp.Client.Impl
                             throw new CanalClientException($"something goes wrong when doing authentication:{ackBody.ErrorMessage} ");
                         }
 
+                       new Thread(() => { GetWithoutAck(100, null, null); }).Start();
                         break;
                     case PacketType.Messages when !p.Compression.Equals(Compression.None):
                         throw new CanalClientException("compression is not supported in this connector");
@@ -365,7 +384,13 @@ namespace CanalSharp.Client.Impl
                             }
                         }
 
-                        _message = msg;
+                       
+                        lock (this)
+                        {
+                            _message = msg;
+                            Monitor.Pulse(this);
+                        }
+                        
                         break;
                 }
 
@@ -376,14 +401,6 @@ namespace CanalSharp.Client.Impl
         }
 
         public override void ChannelReadComplete(IChannelHandlerContext context)
-        {
-
-        }
-    }
-
-    public class Test : ChannelHandlerAdapter
-    {
-        public override void ChannelRead(IChannelHandlerContext context, object message)
         {
 
         }
