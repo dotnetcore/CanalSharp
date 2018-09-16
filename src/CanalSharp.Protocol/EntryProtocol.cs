@@ -214,7 +214,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int EntryTypeFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Com.Alibaba.Otter.Canal.Protocol.EntryType EntryType {
-      get { return entryTypePresentCase_ == EntryTypePresentOneofCase.EntryType ? (global::Com.Alibaba.Otter.Canal.Protocol.EntryType) entryTypePresent_ : 0; }
+      get { return entryTypePresentCase_ == EntryTypePresentOneofCase.EntryType ? (global::Com.Alibaba.Otter.Canal.Protocol.EntryType) entryTypePresent_ : EntryType.Rowdata; }
       set {
         entryTypePresent_ = value;
         entryTypePresentCase_ = EntryTypePresentOneofCase.EntryType;
@@ -449,7 +449,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int VersionFieldNumber = 1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Version {
-      get { return versionPresentCase_ == VersionPresentOneofCase.Version ? (int) versionPresent_ : 0; }
+      get { return versionPresentCase_ == VersionPresentOneofCase.Version ? (int) versionPresent_ : 1; }
       set {
         versionPresent_ = value;
         versionPresentCase_ = VersionPresentOneofCase.Version;
@@ -530,7 +530,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int SourceTypeFieldNumber = 7;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Com.Alibaba.Otter.Canal.Protocol.Type SourceType {
-      get { return sourceTypePresentCase_ == SourceTypePresentOneofCase.SourceType ? (global::Com.Alibaba.Otter.Canal.Protocol.Type) sourceTypePresent_ : 0; }
+      get { return sourceTypePresentCase_ == SourceTypePresentOneofCase.SourceType ? (global::Com.Alibaba.Otter.Canal.Protocol.Type) sourceTypePresent_ : Type.Mysql; }
       set {
         sourceTypePresent_ = value;
         sourceTypePresentCase_ = SourceTypePresentOneofCase.SourceType;
@@ -583,7 +583,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int EventTypeFieldNumber = 11;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Com.Alibaba.Otter.Canal.Protocol.EventType EventType {
-      get { return eventTypePresentCase_ == EventTypePresentOneofCase.EventType ? (global::Com.Alibaba.Otter.Canal.Protocol.EventType) eventTypePresent_ : 0; }
+      get { return eventTypePresentCase_ == EventTypePresentOneofCase.EventType ? (global::Com.Alibaba.Otter.Canal.Protocol.EventType) eventTypePresent_ : EventType.Update; }
       set {
         eventTypePresent_ = value;
         eventTypePresentCase_ = EventTypePresentOneofCase.EventType;
@@ -1629,7 +1629,7 @@ namespace Com.Alibaba.Otter.Canal.Protocol {
     public const int EventTypeFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Com.Alibaba.Otter.Canal.Protocol.EventType EventType {
-      get { return eventTypePresentCase_ == EventTypePresentOneofCase.EventType ? (global::Com.Alibaba.Otter.Canal.Protocol.EventType) eventTypePresent_ : 0; }
+      get { return eventTypePresentCase_ == EventTypePresentOneofCase.EventType ? (global::Com.Alibaba.Otter.Canal.Protocol.EventType) eventTypePresent_ : EventType.Update; }
       set {
         eventTypePresent_ = value;
         eventTypePresentCase_ = EventTypePresentOneofCase.EventType;
