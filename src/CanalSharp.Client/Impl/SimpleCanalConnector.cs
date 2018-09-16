@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using CanalSharp.Common.Logging;
 using CanalSharp.Protocol;
 using CanalSharp.Protocol.Exception;
 using Com.Alibaba.Otter.Canal.Protocol;
 using DotNetty.Buffers;
-using DotNetty.Codecs;
-using DotNetty.Codecs.Protobuf;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
-using DotNetty.Transport.Channels.Embedded;
 using DotNetty.Transport.Channels.Sockets;
 using Google.Protobuf;
 
@@ -70,6 +66,7 @@ namespace CanalSharp.Client.Impl
         private IByteBuffer writeHeader = Unpooled.Buffer(4);
 
         private IChannel _clientChannel;
+        private IChannel _testChannel;
 
         // 是否在connect链接成功后，自动执行rollback操作
         private bool _rollbackOnConnect = true;
@@ -101,7 +98,6 @@ namespace CanalSharp.Client.Impl
             SoTimeout = soTimeout;
             IdleTimeout = idleTimeout;
             _clientIdentity = new ClientIdentity(destination, (short)1001);
-            //Environment.SetEnvironmentVariable("io.netty.allocator.maxOrder", "4");
         }
 
         public async void Connect()
@@ -122,10 +118,10 @@ namespace CanalSharp.Client.Impl
             { // 如果存在条件，说明是自动切换，基于上一次的条件订阅一次
                 Subscribe(_filter);
             }
-            if (_rollbackOnConnect)
-            {
-                Rollback();
-            }
+            //if (_rollbackOnConnect)
+            //{
+            //    Rollback();
+            //}
             _connected = true;
         }
 
@@ -279,8 +275,10 @@ namespace CanalSharp.Client.Impl
                     var pipeline = channel.Pipeline;
                     pipeline.AddLast(nameof(SimpleCanalConnector), this);
                 }));
-            _clientChannel = await bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse(Address), Port)).ConfigureAwait(false);
-
+            _clientChannel =await bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse(Address), Port));
+            var _testChannel = _clientChannel;
+            _testChannel.Pipeline.Remove(this);
+            _testChannel.Pipeline.AddLast(new Test());
         }
 
         private void WaitClientRunning()
@@ -332,7 +330,7 @@ namespace CanalSharp.Client.Impl
                             NetWriteTimeout = IdleTimeout
                         };
 
-                        WriteWithHeader(context.Channel, new Packet()
+                        WriteWithHeader(_testChannel, new Packet()
                         {
                             Type = PacketType.Clientauthentication,
                             Body = ca.ToByteString()
@@ -382,6 +380,15 @@ namespace CanalSharp.Client.Impl
 
         }
     }
+
+    public class Test : ChannelHandlerAdapter
+    {
+        public override void ChannelRead(IChannelHandlerContext context, object message)
+        {
+
+        }
+    }
+
 
 
 
