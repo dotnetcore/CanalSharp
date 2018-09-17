@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ using CanalSharp.Protocol;
 using CanalSharp.Protocol.Exception;
 using Com.Alibaba.Otter.Canal.Protocol;
 using DotNetty.Buffers;
+using DotNetty.Codecs;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
@@ -325,11 +327,36 @@ namespace CanalSharp.Client.Impl
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
+            
             var byteBuffer = (IByteBuffer)message;
-            if (byteBuffer != null)
+            if (byteBuffer == null)
             {
-                var result = byteBuffer.Array.Slice(4, 2);
-                var p = Packet.Parser.ParseFrom(result);
+                return;
+            }
+            int length = byteBuffer.ReadableBytes;
+            if (length <= 0)
+            {
+                return;
+            }
+
+            Stream inputStream = null;
+            try
+            {
+                CodedInputStream codedInputStream;
+                if (byteBuffer.IoBufferCount == 1)
+                {
+                    
+                    var len = byteBuffer.GetInt(0);
+                    byteBuffer.SetReaderIndex(4);
+                    ArraySegment<byte> bytes = byteBuffer.GetIoBuffer(byteBuffer.ReaderIndex, len);
+                    codedInputStream = new CodedInputStream(bytes.Array, bytes.Offset, len);
+                }
+                else
+                {
+                    inputStream = new ReadOnlyByteBufferStream(byteBuffer, false);
+                    codedInputStream = new CodedInputStream(inputStream);
+                }
+                var p = Packet.Parser.ParseFrom(codedInputStream);
                 switch (p.Type)
                 {
                     case PacketType.Handshake when p.Version != 1:
@@ -363,7 +390,7 @@ namespace CanalSharp.Client.Impl
                             throw new CanalClientException($"something goes wrong when doing authentication:{ackBody.ErrorMessage} ");
                         }
 
-                       new Thread(() => { GetWithoutAck(100, null, null); }).Start();
+                        new Thread(() => { GetWithoutAck(100, null, null); }).Start();
                         break;
                     case PacketType.Messages when !p.Compression.Equals(Compression.None):
                         throw new CanalClientException("compression is not supported in this connector");
@@ -384,19 +411,28 @@ namespace CanalSharp.Client.Impl
                             }
                         }
 
-                       
+
                         lock (this)
                         {
                             _message = msg;
                             Monitor.Pulse(this);
                         }
-                        
+
                         break;
                 }
 
 
                 _connected = true;
             }
+            catch (Exception exception)
+            {
+                throw new CodecException(exception);
+            }
+            finally
+            {
+                inputStream?.Dispose();
+            }
+            
 
         }
 
