@@ -1,6 +1,6 @@
 ﻿using CanalSharp.Common;
 
-namespace CanalSharp.Client.Running.Impl
+namespace CanalSharp.Client.Impl.Running
 {
     public class ClientRunningMonitor: AbstractCanalLifeCycle
     {
