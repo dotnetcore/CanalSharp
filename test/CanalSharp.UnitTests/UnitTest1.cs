@@ -1,11 +1,10 @@
 using System;
-using System.Net.Sockets;
 using System.Threading;
 using CanalSharp.Client;
 using CanalSharp.Client.Impl;
 using Xunit;
 
-namespace Canal4Net.UnitTests
+namespace CanalSharp.UnitTests
 {
     public class UnitTest1
     {

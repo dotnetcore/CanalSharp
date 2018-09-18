@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using CanalSharp.Client;
 using CanalSharp.Client.Impl;
 using Com.Alibaba.Otter.Canal.Protocol;
 

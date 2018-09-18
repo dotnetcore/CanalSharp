@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace CanalSharp.Client.Impl.Running
+﻿namespace CanalSharp.Client.Impl.Running
 {
     /// <summary>
     /// client running状态信息
