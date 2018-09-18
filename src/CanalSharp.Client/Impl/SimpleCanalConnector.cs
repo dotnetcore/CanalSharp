@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,7 +118,7 @@ namespace CanalSharp.Client.Impl
             await DoConnect();
             if (_filter != null)
             { // 如果存在条件，说明是自动切换，基于上一次的条件订阅一次
-               await Subscribe(_filter);
+                await Subscribe(_filter);
             }
             //if (_rollbackOnConnect)
             //{
@@ -175,7 +176,7 @@ namespace CanalSharp.Client.Impl
 
         }
 
-        public async  Task Subscribe()
+        public async Task Subscribe()
         {
             await Subscribe("");
         }
@@ -210,43 +211,81 @@ namespace CanalSharp.Client.Impl
 
             try
             {
-                lock (this)
+                var size = (batchSize <= 0) ? 1000 : batchSize;
+                // -1代表不做timeout控制
+                var time = (timeout == null || timeout < 0) ? -1 : timeout;
+                if (unit == null)
                 {
-                    var size = (batchSize <= 0) ? 1000 : batchSize;
-                    // -1代表不做timeout控制
-                    var time = (timeout == null || timeout < 0) ? -1 : timeout;
-                    if (unit == null)
-                    {
-                        unit = 1;
-                    }
-                    var get = new Get()
-                    {
-                        AutoAck = false,
-                        Destination = _clientIdentity.Destination,
-                        ClientId = _clientIdentity.ClientId.ToString(),
-                        FetchSize = size,
-                        Timeout = (long)time,
-                        Unit = (int)unit
-                    };
-                    var packet = new Packet()
-                    {
-                        Type = PacketType.Get,
-                        Body = get.ToByteString()
-                    }.ToByteArray();
-
-                    //WriteWithHeaderA(_clientChannel, packet);
-                    Monitor.Wait(this);
+                    unit = 1;
                 }
+                var get = new Get()
+                {
+                    AutoAck = false,
+                    Destination = _clientIdentity.Destination,
+                    ClientId = _clientIdentity.ClientId.ToString(),
+                    FetchSize = size,
+                    Timeout = (long)time,
+                    Unit = (int)unit
+                };
+                var packet = new Packet()
+                {
+                    Type = PacketType.Get,
+                    Body = get.ToByteString()
+                }.ToByteArray();
+
+                WriteWithHeader(packet).Wait();
 
 
 
-                return _message;
+                return ReceiveMessages();
 
 
             }
             catch (IOException e)
             {
                 throw e;
+            }
+        }
+
+        private Message ReceiveMessages()
+        {
+            var data = ReadNextPacket();
+            var p = Packet.Parser.ParseFrom(data);
+            switch (p.Type)
+            {
+                case PacketType.Messages:
+                    {
+                        if (!p.Compression.Equals(Compression.None))
+                        {
+                            throw new CanalClientException("compression is not supported in this connector");
+                        }
+
+                        var messages = Messages.Parser.ParseFrom(p.Body);
+                        var result = new Message(messages.BatchId);
+                        if (_lazyParseEntry)
+                        {
+                            // byteString
+                            result.RawEntries = messages.Messages_.ToList();
+
+                        }
+                        else
+                        {
+                            foreach (var byteString in messages.Messages_)
+                            {
+                                result.Entries.Add(Entry.Parser.ParseFrom(byteString));
+                            }
+                        }
+                        return result;
+                    }
+                case PacketType.Ack:
+                    {
+                        var ack = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
+                        throw new CanalClientException($"something goes wrong with reason:{ack.ErrorMessage}");
+                    }
+                default:
+                    {
+                        throw new CanalClientException($"unexpected packet type: {p.Type}");
+                    }
             }
         }
 

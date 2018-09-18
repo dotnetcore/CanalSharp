@@ -25,6 +25,7 @@ namespace CanalSharp.Protocol
         public Message(long id)
         {
             Id = id;
+            Entries = new List<Entry>();;
         }
         public Message(long id, bool raw, object entries)
         {
