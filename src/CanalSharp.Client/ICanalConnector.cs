@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CanalSharp.Protocol;
 
 namespace CanalSharp.Client
@@ -8,7 +9,7 @@ namespace CanalSharp.Client
         /// <summary>
         /// 链接对应的canal server
         /// </summary>
-        void Connect();
+        Task Connect();
 
         /// <summary>
         /// 释放链接
@@ -34,12 +35,12 @@ namespace CanalSharp.Client
         /// </summary>
         /// <param name="filter"></param>
         /// TODO: 后续可以考虑，如果本次提交的filter不为空，在执行过滤时，是对canal server filter + 本次filter的交集处理，达到只取1份binlog数据，多个客户端消费不同的表
-        void Subscribe(string filter);
+        Task Subscribe(string filter);
 
         /// <summary>
         ///  客户端订阅，不提交客户端filter，以服务端的filter为准
         /// </summary>
-        void Subscribe();
+        Task Subscribe();
 
         /// <summary>
         /// 取消订阅

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using CanalSharp.Common.Logging;
@@ -11,9 +9,6 @@ using CanalSharp.Protocol;
 using CanalSharp.Protocol.Exception;
 using Com.Alibaba.Otter.Canal.Protocol;
 using DotNetty.Buffers;
-using DotNetty.Codecs;
-using DotNetty.Common.Utilities;
-using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Google.Protobuf;
@@ -65,8 +60,8 @@ namespace CanalSharp.Client.Impl
 
 
 
-        private IByteBuffer readHeader = Unpooled.Buffer(1024);
-        private IByteBuffer writeHeader = Unpooled.Buffer(1024);
+        private IByteBuffer readHeader = Unpooled.Buffer(10240);
+        private IByteBuffer writeHeader = Unpooled.Buffer(10240);
 
         private IChannel _clientChannel;
         private IChannel _testChannel;
@@ -77,6 +72,9 @@ namespace CanalSharp.Client.Impl
         private Message _message;
         // 是否自动化解析Entry对象,如果考虑最大化性能可以延后解析
         private bool _lazyParseEntry = false;
+
+        private TcpClient _tcpClient;
+        private NetworkStream _channelNetworkStream;
 
 
 
@@ -103,7 +101,7 @@ namespace CanalSharp.Client.Impl
             _clientIdentity = new ClientIdentity(destination, (short)1001);
         }
 
-        public  void Connect()
+        public async Task Connect()
         {
             if (_connected)
             {
@@ -116,10 +114,10 @@ namespace CanalSharp.Client.Impl
                 return;
             }
 
-             DoConnect().Wait();
+            await DoConnect();
             if (_filter != null)
             { // 如果存在条件，说明是自动切换，基于上一次的条件订阅一次
-                Subscribe(_filter);
+               await Subscribe(_filter);
             }
             //if (_rollbackOnConnect)
             //{
@@ -138,9 +136,9 @@ namespace CanalSharp.Client.Impl
             throw new NotImplementedException();
         }
 
-        public void Subscribe(string filter)
+        public async Task Subscribe(string filter)
         {
-            //waitClientRunning();
+            //WaitClientRunning();
             if (!_running)
             {
                 return;
@@ -157,28 +155,29 @@ namespace CanalSharp.Client.Impl
                         ClientId = _clientIdentity.ClientId.ToString(),
                         Filter = _filter != null ? _filter : ""
                     }.ToByteString()
-                };
-                WriteWithHeader(_channel, pack.ToByteArray());
+                }.ToByteArray();
 
-                //Packet p = Packet.parseFrom(readNextPacket());
-                //Ack ack = Ack.parseFrom(p.getBody());
-                //if (ack.getErrorCode() > 0)
-                //{
-                //    throw new CanalClientException("failed to subscribe with reason: " + ack.getErrorMessage());
-                //}
+                await WriteWithHeader(pack);
+
+                var p = Packet.Parser.ParseFrom(ReadNextPacket());
+                var ack = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
+                if (ack.ErrorCode > 0)
+                {
+                    throw new CanalClientException($"failed to subscribe with reason: {ack.ErrorMessage}");
+                }
 
                 _clientIdentity.Filter = filter;
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 throw new CanalClientException(e.Message);
             }
 
         }
 
-        public void Subscribe()
+        public async  Task Subscribe()
         {
-            throw new NotImplementedException();
+            await Subscribe("");
         }
 
         public void UnSubscribe()
@@ -198,10 +197,10 @@ namespace CanalSharp.Client.Impl
 
         public Message GetWithoutAck(int batchSize)
         {
-           return GetWithoutAck(batchSize, null, null);
+            return GetWithoutAck(batchSize, null, null);
         }
 
-        public  Message GetWithoutAck(int batchSize, long? timeout, int? unit)
+        public Message GetWithoutAck(int batchSize, long? timeout, int? unit)
         {
             //waitClientRunning();
             //if (!_running)
@@ -214,29 +213,29 @@ namespace CanalSharp.Client.Impl
                 lock (this)
                 {
                     var size = (batchSize <= 0) ? 1000 : batchSize;
-                // -1代表不做timeout控制
-                var time = (timeout == null || timeout < 0) ? -1 : timeout;
-                if (unit == null)
-                {
-                    unit = 1;
-                }
-                var get = new Get()
-                {
-                    AutoAck = false,
-                    Destination = _clientIdentity.Destination,
-                    ClientId = _clientIdentity.ClientId.ToString(),
-                    FetchSize = size,
-                    Timeout = (long)time,
-                    Unit = (int)unit
-                };
-                var packet = new Packet()
-                {
-                    Type = PacketType.Get,
-                    Body = get.ToByteString()
-                }.ToByteArray();
+                    // -1代表不做timeout控制
+                    var time = (timeout == null || timeout < 0) ? -1 : timeout;
+                    if (unit == null)
+                    {
+                        unit = 1;
+                    }
+                    var get = new Get()
+                    {
+                        AutoAck = false,
+                        Destination = _clientIdentity.Destination,
+                        ClientId = _clientIdentity.ClientId.ToString(),
+                        FetchSize = size,
+                        Timeout = (long)time,
+                        Unit = (int)unit
+                    };
+                    var packet = new Packet()
+                    {
+                        Type = PacketType.Get,
+                        Body = get.ToByteString()
+                    }.ToByteArray();
 
-                WriteWithHeaderA(_clientChannel, packet);
-                Monitor.Wait(this);
+                    //WriteWithHeaderA(_clientChannel, packet);
+                    Monitor.Wait(this);
                 }
 
 
@@ -272,178 +271,102 @@ namespace CanalSharp.Client.Impl
         }
         private async Task DoConnect()
         {
-            var group = new MultithreadEventLoopGroup();
-            var bootstrap = new Bootstrap();
-            bootstrap
-                .Group(group)
-                .Channel<TcpSocketChannel>()
-                .Option(ChannelOption.SoTimeout, SoTimeout)
-                .Option(ChannelOption.TcpNodelay, true)
-                .Option(ChannelOption.SoKeepalive, true)
-                .Option(ChannelOption.Allocator, UnpooledByteBufferAllocator.Default)
-                .Handler(new ActionChannelInitializer<ISocketChannel>(channel =>
+            try
+            {
+                _tcpClient = new TcpClient(Address, Port);
+                _channelNetworkStream = _tcpClient.GetStream();
+                var p = Packet.Parser.ParseFrom(ReadNextPacket());
+                if (p != null)
                 {
-                    var pipeline = channel.Pipeline;
-                    pipeline.AddLast(nameof(SimpleCanalConnector), this);
-                }));
-            _clientChannel =await bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse(Address), Port)).ConfigureAwait(false);
-       }
+                    if (p.Version != 1)
+                    {
+                        throw new CanalClientException("unsupported version at this client.");
+                    }
+                    if (p.Type != PacketType.Handshake)
+                    {
+                        throw new CanalClientException("expect handshake but found other type.");
+                    }
+                    var handshake = Handshake.Parser.ParseFrom(p.Body);
+                    supportedCompressions.Add(handshake.SupportedCompressions);
+
+                    var ca = new ClientAuth()
+                    {
+                        Username = Username != null ? Username : "",
+                        Password = ByteString.CopyFromUtf8(Password != null ? Password : ""),
+                        NetReadTimeout = IdleTimeout,
+                        NetWriteTimeout = IdleTimeout
+                    };
+
+                    var packArray = new Packet()
+                    {
+                        Type = PacketType.Clientauthentication,
+                        Body = ca.ToByteString()
+                    }.ToByteArray();
+
+                    await WriteWithHeader(packArray);
+
+                    var packet = Packet.Parser.ParseFrom(ReadNextPacket());
+                    if (packet.Type != PacketType.Ack)
+                    {
+                        throw new CanalClientException("unexpected packet type when ack is expected");
+                    }
+
+                    var ackBody = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
+                    if (ackBody.ErrorCode > 0)
+                    {
+                        throw new CanalClientException("something goes wrong when doing authentication:" + ackBody.ErrorMessage);
+                    }
+
+                    _connected = _tcpClient.Connected;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+        }
+
+
+        private byte[] ReadNextPacket()
+        {
+            lock (_readDataLock)
+            {
+                var headerLength = ReadHeaderLength();
+                var recevieData = new byte[headerLength];
+                _channelNetworkStream.Read(recevieData, 0, recevieData.Length);
+                return recevieData;
+            }
+        }
+
+        private int ReadHeaderLength()
+        {
+            var headerBytes = new byte[4];
+            _channelNetworkStream.Read(headerBytes, 0, 4);
+            Array.Reverse(headerBytes);
+            return BitConverter.ToInt32(headerBytes, 0);
+        }
+        private async Task WriteWithHeader(byte[] body)
+        {
+            var len = body.Length;
+            var bytes = GetHeaderBytes(len);
+            await _channelNetworkStream.WriteAsync(bytes, 0, bytes.Length);
+            await _channelNetworkStream.WriteAsync(body, 0, body.Length);
+        }
+
+
+        private byte[] GetHeaderBytes(int lenth)
+        {
+            var data = BitConverter.GetBytes(lenth);
+            Array.Reverse(data);
+            return data;
+        }
 
         private void WaitClientRunning()
         {
             _running = true;
         }
 
-
-        private void WriteWithHeader(IChannel channel, byte[] body)
-        {
-            lock (_writeDataLock)
-            {
-                writeHeader.Clear();
-                writeHeader.WriteInt(body.Length);
-                channel.WriteAsync(writeHeader);
-                channel.WriteAndFlushAsync(Unpooled.WrappedBuffer(body)).Wait();
-
-            }
-        }
-
-        private void WriteWithHeaderA(IChannel channel, byte[] body)
-        {
-            lock (_writeDataLock)
-            {
-                readHeader.Clear();
-                readHeader.WriteInt(body.Length);
-                channel.WriteAsync(readHeader);
-                channel.WriteAndFlushAsync(Unpooled.WrappedBuffer(body)).Wait();
-
-            }
-        }
-
-        private void WriteWithHeader(byte[] body)
-        {
-            WriteWithHeader(writableChannel, body);
-        }
-
-
-        public override void ChannelRead(IChannelHandlerContext context, object message)
-        {
-            
-            var byteBuffer = (IByteBuffer)message;
-            if (byteBuffer == null)
-            {
-                return;
-            }
-            int length = byteBuffer.ReadableBytes;
-            if (length <= 0)
-            {
-                return;
-            }
-
-            Stream inputStream = null;
-            try
-            {
-                CodedInputStream codedInputStream;
-                if (byteBuffer.IoBufferCount == 1)
-                {
-                    
-                    var len = byteBuffer.GetInt(0);
-                    byteBuffer.SetReaderIndex(4);
-                    ArraySegment<byte> bytes = byteBuffer.GetIoBuffer(byteBuffer.ReaderIndex, len);
-                    codedInputStream = new CodedInputStream(bytes.Array, bytes.Offset, len);
-                }
-                else
-                {
-                    inputStream = new ReadOnlyByteBufferStream(byteBuffer, false);
-                    codedInputStream = new CodedInputStream(inputStream);
-                }
-                var p = Packet.Parser.ParseFrom(codedInputStream);
-                switch (p.Type)
-                {
-                    case PacketType.Handshake when p.Version != 1:
-                        throw new CanalClientException("unsupported version at this client.");
-                    case PacketType.Handshake when p.Type != PacketType.Handshake:
-                        throw new CanalClientException("expect handshake but found other type.");
-                    case PacketType.Handshake:
-                        var handshake = Handshake.Parser.ParseFrom(p.Body);
-                        supportedCompressions.Add(handshake.SupportedCompressions);
-
-                        var ca = new ClientAuth()
-                        {
-                            Username = Username != null ? Username : "",
-                            Password = ByteString.CopyFromUtf8(Password != null ? Password : ""),
-                            NetReadTimeout = IdleTimeout,
-                            NetWriteTimeout = IdleTimeout
-                        };
-
-                        WriteWithHeader(_clientChannel, new Packet()
-                        {
-                            Type = PacketType.Clientauthentication,
-                            Body = ca.ToByteString()
-                        }.ToByteArray());
-                        break;
-                    case PacketType.Ack when p.Type != PacketType.Ack:
-                        throw new CanalClientException("unexpected packet type when ack is expected");
-                    case PacketType.Ack:
-                        var ackBody = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
-                        if (ackBody.ErrorCode > 0)
-                        {
-                            throw new CanalClientException($"something goes wrong when doing authentication:{ackBody.ErrorMessage} ");
-                        }
-
-                        new Thread(() => { GetWithoutAck(100, null, null); }).Start();
-                        break;
-                    case PacketType.Messages when !p.Compression.Equals(Compression.None):
-                        throw new CanalClientException("compression is not supported in this connector");
-                    //return msg;
-                    case PacketType.Messages:
-                        var messages = Messages.Parser.ParseFrom(p.Body);
-                        var msg = new Message(messages.BatchId);
-                        if (_lazyParseEntry)
-                        {
-                            // byteString
-                            msg.RawEntries = messages.Messages_.ToList();
-                        }
-                        else
-                        {
-                            foreach (ByteString byteString in messages.Messages_)
-                            {
-                                msg.Entries.Add(Entry.Parser.ParseFrom(byteString));
-                            }
-                        }
-
-
-                        lock (this)
-                        {
-                            _message = msg;
-                            Monitor.Pulse(this);
-                        }
-
-                        break;
-                }
-
-
-                _connected = true;
-            }
-            catch (Exception exception)
-            {
-                throw new CodecException(exception);
-            }
-            finally
-            {
-                inputStream?.Dispose();
-            }
-            
-
-        }
-
-        public override void ChannelReadComplete(IChannelHandlerContext context)
-        {
-
-        }
     }
-
-
-
-
-
 }
