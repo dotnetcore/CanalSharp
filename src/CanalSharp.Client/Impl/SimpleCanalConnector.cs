@@ -495,13 +495,10 @@ namespace CanalSharp.Client.Impl
 
         private int ReadHeaderLength()
         {
-            lock (this)
-            {
                 var headerBytes = new byte[4];
                 _channelNetworkStream.Read(headerBytes, 0, 4);
                 Array.Reverse(headerBytes);
                 return BitConverter.ToInt32(headerBytes, 0);
-            }
         }
 
         private void WriteWithHeader(byte[] body)

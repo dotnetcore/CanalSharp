@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using CanalSharp.Abstract;
 
 namespace CanalSharp.Client.Impl
 {
