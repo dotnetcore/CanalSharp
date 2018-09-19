@@ -58,10 +58,6 @@ namespace CanalSharp.Client.Impl
         private static readonly object _readDataLock = new object();
 
 
-
-        private IChannel _clientChannel;
-        private IChannel _testChannel;
-
         // 是否在connect链接成功后，自动执行rollback操作
         private bool _rollbackOnConnect = true;
 
@@ -258,7 +254,7 @@ namespace CanalSharp.Client.Impl
                     Body = get.ToByteString()
                 }.ToByteArray();
 
-                WriteWithHeader(packet).Wait();
+                WriteWithHeader(packet);
 
 
 
@@ -350,7 +346,7 @@ namespace CanalSharp.Client.Impl
 
             try
             {
-                WriteWithHeader(pack).Wait();
+                WriteWithHeader(pack);
             }
             catch (IOException e)
             {
@@ -377,7 +373,7 @@ namespace CanalSharp.Client.Impl
                     Body = ca.ToByteString()
                 }.ToByteArray();
 
-                WriteWithHeader(pack).Wait();
+                WriteWithHeader(pack);
             }
             catch (IOException e)
             {
@@ -429,7 +425,7 @@ namespace CanalSharp.Client.Impl
                         Body = ca.ToByteString()
                     }.ToByteArray();
 
-                    WriteWithHeader(packArray).Wait();
+                    WriteWithHeader(packArray);
 
                     var packet = Packet.Parser.ParseFrom(ReadNextPacket());
                     if (packet.Type != PacketType.Ack)
@@ -488,15 +484,15 @@ namespace CanalSharp.Client.Impl
             }
         }
 
-        private async Task WriteWithHeader(byte[] body)
+        private  void WriteWithHeader(byte[] body)
         {
-            //lock (_writeDataLock)
-            //{
-            var len = body.Length;
+            lock (_writeDataLock)
+            {
+                var len = body.Length;
             var bytes = GetHeaderBytes(len);
-            await _channelNetworkStream.WriteAsync(bytes, 0, bytes.Length);
-            await _channelNetworkStream.WriteAsync(body, 0, body.Length);
-            //}
+             _channelNetworkStream.Write(bytes, 0, bytes.Length);
+             _channelNetworkStream.Write(body, 0, body.Length);
+            }
 
         }
 
