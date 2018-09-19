@@ -67,6 +67,11 @@ namespace CanalSharp.Client.Impl
         private TcpClient _tcpClient;
         private NetworkStream _channelNetworkStream;
 
+        /// <summary>
+        /// 是否在connect链接成功后，自动执行rollback操作
+        /// </summary>
+        private bool _rollbackOnDisConnect = false;
+
 
         public SimpleCanalConnector(string address, int port, string username, string password, string destination) : this(address, port, username, password, destination, 60000, 60 * 60 * 1000)
         {
@@ -118,7 +123,26 @@ namespace CanalSharp.Client.Impl
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            if (_rollbackOnDisConnect && _tcpClient.Connected == false)
+            {
+                Rollback();
+            }
+            _connected = false;
+            DoDisConnection();
+        }
+
+        private void DoDisConnection()
+        {
+            if (_tcpClient != null)
+            {
+                QuietlyClose();
+            }
+
+        }
+
+        private void QuietlyClose()
+        {
+            _tcpClient.Close();
         }
 
         public bool CheckValid()
