@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using CanalSharp.Common.Logging;
 using CanalSharp.Protocol;
@@ -61,9 +60,6 @@ namespace CanalSharp.Client.Impl
 
 
 
-        private IByteBuffer readHeader = Unpooled.Buffer(10240);
-        private IByteBuffer writeHeader = Unpooled.Buffer(10240);
-
         private IChannel _clientChannel;
         private IChannel _testChannel;
 
@@ -76,9 +72,6 @@ namespace CanalSharp.Client.Impl
 
         private TcpClient _tcpClient;
         private NetworkStream _channelNetworkStream;
-
-        public int i { get; set; } = 1;
-
 
 
         public SimpleCanalConnector(string address, int port, string username, string password, string destination) : this(address, port, username, password, destination, 60000, 60 * 60 * 1000)
@@ -270,7 +263,6 @@ namespace CanalSharp.Client.Impl
                                 throw new CanalClientException("compression is not supported in this connector");
                             }
 
-                            i++;
                             var messages = Messages.Parser.ParseFrom(p.Body);
                             var result = new Message(messages.BatchId);
                             if (_lazyParseEntry)
@@ -303,7 +295,6 @@ namespace CanalSharp.Client.Impl
             }
             catch (Exception e)
             {
-                Console.WriteLine(i);
                 throw;
             }
             
