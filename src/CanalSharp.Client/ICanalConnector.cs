@@ -9,7 +9,7 @@ namespace CanalSharp.Client
         /// <summary>
         /// 链接对应的canal server
         /// </summary>
-        Task Connect();
+        void Connect();
 
         /// <summary>
         /// 释放链接

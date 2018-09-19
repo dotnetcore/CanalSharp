@@ -38,7 +38,6 @@ namespace CanalSharp.Client.Impl
         /// </summary>
         private volatile bool _connected = false;
 
-        //private ClientRunningMonitor runningMonitor;
 
         private volatile bool _running = false;
         /// <summary>
@@ -92,15 +91,15 @@ namespace CanalSharp.Client.Impl
             _clientIdentity = new ClientIdentity(destination, (short)1001);
         }
 
-        public async Task Connect()
+        public void Connect()
         {
             if (_connected)
             {
                 return;
             }
 
-            //WaitClientRunning();
-            if (_running)
+            WaitClientRunning();
+            if (!_running)
             {
                 return;
             }
@@ -110,10 +109,10 @@ namespace CanalSharp.Client.Impl
             { // 如果存在条件，说明是自动切换，基于上一次的条件订阅一次
                 Subscribe(_filter);
             }
-            //if (_rollbackOnConnect)
-            //{
-            //    Rollback();
-            //}
+            if (_rollbackOnConnect)
+            {
+                Rollback();
+            }
             _connected = true;
         }
 
@@ -129,7 +128,7 @@ namespace CanalSharp.Client.Impl
 
         public void Subscribe(string filter)
         {
-            //WaitClientRunning();
+            WaitClientRunning();
             if (!_running)
             {
                 return;
@@ -173,11 +172,11 @@ namespace CanalSharp.Client.Impl
 
         public void UnSubscribe()
         {
-            //waitClientRunning();
-            //if (!running)
-            //{
-            //    return;
-            //}
+            WaitClientRunning();
+            if (!_running)
+            {
+                return;
+            }
             try
             {
                 var unsub = new Unsub()
@@ -224,11 +223,11 @@ namespace CanalSharp.Client.Impl
 
         public Message GetWithoutAck(int batchSize, long? timeout, int? unit)
         {
-            //waitClientRunning();
-            //if (!_running)
-            //{
-            //    return null;
-            //}
+            WaitClientRunning();
+            if (!_running)
+            {
+                return null;
+            }
 
             try
             {
@@ -273,46 +272,43 @@ namespace CanalSharp.Client.Impl
 
             try
             {
-                lock (this)
+                var data = ReadNextPacket();
+                var p = Packet.Parser.ParseFrom(data);
+                switch (p.Type)
                 {
-                    var data = ReadNextPacket();
-                    var p = Packet.Parser.ParseFrom(data);
-                    switch (p.Type)
-                    {
-                        case PacketType.Messages:
+                    case PacketType.Messages:
+                        {
+                            if (!p.Compression.Equals(Compression.None))
                             {
-                                if (!p.Compression.Equals(Compression.None))
-                                {
-                                    throw new CanalClientException("compression is not supported in this connector");
-                                }
+                                throw new CanalClientException("compression is not supported in this connector");
+                            }
 
-                                var messages = Messages.Parser.ParseFrom(p.Body);
-                                var result = new Message(messages.BatchId);
-                                if (_lazyParseEntry)
-                                {
-                                    // byteString
-                                    result.RawEntries = messages.Messages_.ToList();
+                            var messages = Messages.Parser.ParseFrom(p.Body);
+                            var result = new Message(messages.BatchId);
+                            if (_lazyParseEntry)
+                            {
+                                // byteString
+                                result.RawEntries = messages.Messages_.ToList();
 
-                                }
-                                else
+                            }
+                            else
+                            {
+                                foreach (var byteString in messages.Messages_)
                                 {
-                                    foreach (var byteString in messages.Messages_)
-                                    {
-                                        result.Entries.Add(Entry.Parser.ParseFrom(byteString));
-                                    }
+                                    result.Entries.Add(Entry.Parser.ParseFrom(byteString));
                                 }
-                                return result;
                             }
-                        case PacketType.Ack:
-                            {
-                                var ack = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
-                                throw new CanalClientException($"something goes wrong with reason:{ack.ErrorMessage}");
-                            }
-                        default:
-                            {
-                                throw new CanalClientException($"unexpected packet type: {p.Type}");
-                            }
-                    }
+                            return result;
+                        }
+                    case PacketType.Ack:
+                        {
+                            var ack = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
+                            throw new CanalClientException($"something goes wrong with reason:{ack.ErrorMessage}");
+                        }
+                    default:
+                        {
+                            throw new CanalClientException($"unexpected packet type: {p.Type}");
+                        }
                 }
 
             }
@@ -325,11 +321,11 @@ namespace CanalSharp.Client.Impl
 
         public void Ack(long batchId)
         {
-            //waitClientRunning();
-            //if (!running)
-            //{
-            //    return;
-            //}
+            WaitClientRunning();
+            if (!_running)
+            {
+                return;
+            }
 
             var ca = new ClientAck()
             {
@@ -356,7 +352,7 @@ namespace CanalSharp.Client.Impl
 
         public void Rollback(long batchId)
         {
-            //waitClientRunning();
+            WaitClientRunning();
 
             var ca = new ClientRollback()
             {
@@ -383,7 +379,7 @@ namespace CanalSharp.Client.Impl
 
         public void Rollback()
         {
-            //waitClientRunning();
+            WaitClientRunning();
             Rollback(0);// 0代笔未设置
         }
 
@@ -484,14 +480,14 @@ namespace CanalSharp.Client.Impl
             }
         }
 
-        private  void WriteWithHeader(byte[] body)
+        private void WriteWithHeader(byte[] body)
         {
             lock (_writeDataLock)
             {
                 var len = body.Length;
-            var bytes = GetHeaderBytes(len);
-             _channelNetworkStream.Write(bytes, 0, bytes.Length);
-             _channelNetworkStream.Write(body, 0, body.Length);
+                var bytes = GetHeaderBytes(len);
+                _channelNetworkStream.Write(bytes, 0, bytes.Length);
+                _channelNetworkStream.Write(body, 0, body.Length);
             }
 
         }
