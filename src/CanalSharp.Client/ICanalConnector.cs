@@ -35,12 +35,12 @@ namespace CanalSharp.Client
         /// </summary>
         /// <param name="filter"></param>
         /// TODO: 后续可以考虑，如果本次提交的filter不为空，在执行过滤时，是对canal server filter + 本次filter的交集处理，达到只取1份binlog数据，多个客户端消费不同的表
-        Task Subscribe(string filter);
+        void Subscribe(string filter);
 
         /// <summary>
         ///  客户端订阅，不提交客户端filter，以服务端的filter为准
         /// </summary>
-        Task Subscribe();
+        void Subscribe();
 
         /// <summary>
         /// 取消订阅
@@ -63,7 +63,7 @@ namespace CanalSharp.Client
         /// <param name="timeout"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        Message Get(int batchSize, long timeout, TimeSpan unit);
+       Message Get(int batchSize, long? timeout, int? unit);
 
         /// <summary>
         /// 不指定 position 获取事件，该方法返回的条件: 尝试拿batchSize条记录，有多少取多少，不会阻塞等待

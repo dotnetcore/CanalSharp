@@ -17,9 +17,9 @@ namespace CanalSharp.SimpleClient
             connector.Subscribe();
             while (true)
             {
-                var message = connector.Get(100);
+                var message = connector.Get(5000);
                 var batchId = message.Id;
-                if (batchId == -1 || message.Entries.Count<=0)
+                if (batchId == -1 || message.Entries.Count <= 0)
                 {
                     Thread.Sleep(300);
                 }
@@ -47,28 +47,32 @@ namespace CanalSharp.SimpleClient
 
                 }
 
-                EventType eventType = rowChange.EventType;
-                Console.WriteLine(
-                    $"================> binlog[{entry.Header.LogfileName}:{entry.Header.LogfileOffset}] , name[{entry.Header.SchemaName},{entry.Header.TableName}] , eventType :{eventType}");
-
-                foreach (var rowData in rowChange.RowDatas)
+                if (rowChange != null)
                 {
-                    if (eventType == EventType.Delete)
+                    EventType eventType = rowChange.EventType;
+                    Console.WriteLine(
+                        $"================> binlog[{entry.Header.LogfileName}:{entry.Header.LogfileOffset}] , name[{entry.Header.SchemaName},{entry.Header.TableName}] , eventType :{eventType}");
+
+                    foreach (var rowData in rowChange.RowDatas)
                     {
-                        PrintColumn(rowData.BeforeColumns.ToList());
-                    }
-                    else if (eventType == EventType.Insert)
-                    {
-                        PrintColumn(rowData.BeforeColumns.ToList());
-                    }
-                    else
-                    {
-                        Console.WriteLine("-------> before");
-                        PrintColumn(rowData.BeforeColumns.ToList());
-                        Console.WriteLine("-------> after");
-                        PrintColumn(rowData.AfterColumns.ToList());
+                        if (eventType == EventType.Delete)
+                        {
+                            PrintColumn(rowData.BeforeColumns.ToList());
+                        }
+                        else if (eventType == EventType.Insert)
+                        {
+                            PrintColumn(rowData.BeforeColumns.ToList());
+                        }
+                        else
+                        {
+                            Console.WriteLine("-------> before");
+                            PrintColumn(rowData.BeforeColumns.ToList());
+                            Console.WriteLine("-------> after");
+                            PrintColumn(rowData.AfterColumns.ToList());
+                        }
                     }
                 }
+
             }
         }
 
