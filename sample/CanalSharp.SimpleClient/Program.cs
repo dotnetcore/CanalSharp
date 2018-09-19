@@ -21,6 +21,7 @@ namespace CanalSharp.SimpleClient
                 var batchId = message.Id;
                 if (batchId == -1 || message.Entries.Count <= 0)
                 {
+                    Console.WriteLine("没有数据了.............");
                     Thread.Sleep(300);
                 }
                 PrintEntry(message.Entries);
