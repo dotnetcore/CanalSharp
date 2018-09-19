@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using CanalSharp.Protocol;
+﻿using CanalSharp.Protocol;
 
 namespace CanalSharp.Client
 {
