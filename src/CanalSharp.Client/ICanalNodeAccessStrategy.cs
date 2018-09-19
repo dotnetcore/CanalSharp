@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 
-namespace CanalSharp.Abstract
+namespace CanalSharp.Client
 {
     public interface ICanalNodeAccessStrategy
     {
