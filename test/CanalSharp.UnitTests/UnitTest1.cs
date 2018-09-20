@@ -17,6 +17,8 @@ namespace CanalSharp.UnitTests
             ICanalConnector connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destination, "", "");
             connector.Connect();
             Console.Read();
+
+            Mutex a=new Mutex(false);
             //lock (_lock)
             //{
             //    new Thread(Test).Start();

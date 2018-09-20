@@ -15,30 +15,17 @@ namespace CanalSharp.SimpleClient
             var connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destination, "", "");
             connector.Connect();
             connector.Subscribe();
-            try
+            while (true)
             {
-                while (true)
+                var message = connector.Get(5000);
+                var batchId = message.Id;
+                if (batchId == -1 || message.Entries.Count <= 0)
                 {
-                    var message = connector.GetWithoutAck(5000);
-                    var batchId = message.Id;
-                    if (batchId == -1 || message.Entries.Count <= 0)
-                    {
-                        Console.WriteLine("=======没有数据了=======");
-                        Thread.Sleep(300);
-                        continue;
-                    }
-                    PrintEntry(message.Entries);
-
-                    connector.Ack(batchId);
+                    Console.WriteLine("没有数据了.............");
+                    Thread.Sleep(300);
                 }
+                PrintEntry(message.Entries);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                connector.Rollback();
-                throw;
-            }
-            
         }
 
         private static void PrintEntry(List<Entry> entrys)

@@ -1,8 +1,4 @@
-﻿// #region File Annotation
-// 
-
-
-using CanalSharp.Common.Exception;
+﻿using CanalSharp.Common.Exception;
 
 namespace CanalSharp.Common
 {
@@ -19,7 +15,7 @@ namespace CanalSharp.Common
         {
             if (Running)
             {
-                throw new CanalException(this.GetType().Name + " has startup , don't repeat start");
+                throw new CanalException($" {nameof(AbstractCanalLifeCycle)} has startup , don't repeat start");
             }
 
             Running = true;
@@ -29,7 +25,7 @@ namespace CanalSharp.Common
         {
             if (!Running)
             {
-                throw new CanalException(this.GetType().Name + " isn't start , please check");
+                throw new CanalException($"{nameof(AbstractCanalLifeCycle)} isn't start , please check");
             }
 
             Running = false;
