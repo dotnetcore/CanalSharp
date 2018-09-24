@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../build/common.props" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <PackageReference Include="DotNetty.Codecs.Protobuf" Version="0.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CanalSharp.Common\CanalSharp.Common.csproj" />
+    <ProjectReference Include="..\CanalSharp.Protocol\CanalSharp.Protocol.csproj" />
+  </ItemGroup>
+
+</Project>
