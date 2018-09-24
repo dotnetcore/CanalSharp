@@ -1,13 +1,14 @@
 <Project>
   <PropertyGroup Label="Package">
-    <Description>C# client for canal. https://github.com/alibaba/canal</Description>
     <Copyright></Copyright>
-    <PackageLicenseUrl>https://github.com/Canal4Net/Canal4Net/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/Canal4Net/Canal4Net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Canal4Net/Canal4Net.git</RepositoryUrl>
+
+    <Description>阿里巴巴mysql数据库binlog的增量订阅/消费组件 Canal 的 .NET 客户端</Description>
+    <PackageLicenseUrl>https://github.com/CanalSharp/CanalSharp/blob/dev/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/CanalSharp/CanalSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CanalSharp/CanalSharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>canal;mysql;binlog</PackageTags>
-    <Company>Canal4Net Org.</Company>
-    <Authors>stulzq,WithLin</Authors>
+    <Company>CanalSharp Org.</Company>
+    <Authors>stulzq,WithLin,CanalSharp</Authors>
   </PropertyGroup>
 </Project>
