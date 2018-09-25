@@ -12,7 +12,9 @@ namespace CanalSharp.Protocol.Position
         public string JournalName { get; set; }
         public long? Position { get; set; }
 
-        //// 记录一下位点对应的serverId
+        /// <summary>
+        /// 记录一下位点对应的serverId
+        /// </summary>
         public long? ServerId { get; set; }
 
         public string Gtid = null;
@@ -104,20 +106,14 @@ namespace CanalSharp.Protocol.Position
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         * 
-         * @see java.lang.Comparable#compareTo(java.lang.Object)
-         */
+
         public int CompareTo(EntryPosition o)
         {
             var val = string.Compare(JournalName, o.JournalName, StringComparison.Ordinal);
 
             if (val != 0) return val;
-            if (Position != null)
-            {
-                return (int) (Position - o.Position);
-            }
+            if (Position == null) return val;
+            if (o.Position != null) return (int) (Position - o.Position);
             return val;
         }
     }

@@ -12,10 +12,10 @@ namespace CanalSharp.Common.Utils
 
     public class AddressUtils
     {
-        private static readonly ILogger _logger = LogManager.GetLogger(typeof(AddressUtils));
+        private static readonly ILogger Logger = CanalSharpLogManager.GetLogger(typeof(AddressUtils));
         private static  string  LOCALHOST_IP = "127.0.0.1";
         private static string EMPTY_IP     = "0.0.0.0";
-        private static readonly Regex IP_PATTERN   = new Regex("[0-9]{1,3}(\\.[0-9]{1,3}){3,}");
+        private static readonly Regex IpPattern   = new Regex("[0-9]{1,3}(\\.[0-9]{1,3}){3,}");
 
 
         public static bool IsAvailablePort(int port)
@@ -23,7 +23,7 @@ namespace CanalSharp.Common.Utils
             TcpListener ss = null;
             try
             {
-                ss = new TcpListener(port);
+                ss = new TcpListener(IPAddress.Any,port);
                 ss.Start();
                 return true;
             }
@@ -41,6 +41,7 @@ namespace CanalSharp.Common.Utils
                     }
                     catch (IOException e)
                     {
+
                     }
                 }
             }
@@ -50,7 +51,7 @@ namespace CanalSharp.Common.Utils
         {
             if (address == null || IPAddress.IsLoopback(address)) return false;
             var name = Dns.GetHostEntry(address).HostName;
-            return (name != null && !EMPTY_IP.Equals(name) && !LOCALHOST_IP.Equals(name) && IP_PATTERN.IsMatch(name));
+            return (name != null && !EMPTY_IP.Equals(name) && !LOCALHOST_IP.Equals(name) && IpPattern.IsMatch(name));
         }
 
 
@@ -95,36 +96,31 @@ namespace CanalSharp.Common.Utils
             }
             catch (System.Exception e)
             {
-                _logger.Warning($"Failed to retriving local host ip address, try scan network card ip address. cause: {e.Message}");
+                Logger.Warning($"Failed to retriving local host ip address, try scan network card ip address. cause: {e.Message}");
             }
             try
             {
-                var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-                if (interfaces != null)
+                foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
                 {
-                    foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
+                    if (ni.NetworkInterfaceType != NetworkInterfaceType.Wireless80211 &&
+                        ni.NetworkInterfaceType != NetworkInterfaceType.Ethernet) continue;
+                    Console.WriteLine(ni.Name);
+                    foreach (var ip in ni.GetIPProperties().UnicastAddresses)
                     {
-                        if (ni.NetworkInterfaceType != NetworkInterfaceType.Wireless80211 &&
-                            ni.NetworkInterfaceType != NetworkInterfaceType.Ethernet) continue;
-                        Console.WriteLine(ni.Name);
-                        foreach (var ip in ni.GetIPProperties().UnicastAddresses)
+                        if (ip.Address.AddressFamily != AddressFamily.InterNetwork) continue;
+                        var address = ip.Address;
+                        if (IsValidHostAddress(address))
                         {
-                            if (ip.Address.AddressFamily != AddressFamily.InterNetwork) continue;
-                            var address = ip.Address;
-                            if (IsValidHostAddress(address))
-                            {
-                                return address;
-                            }
+                            return address;
                         }
                     }
-                    
                 }
             }
             catch (System.Exception e)
             {
-                _logger.Warning($"Failed to retriving network card ip address. cause:{e.Message}");
+                Logger.Warning($"Failed to retriving network card ip address. cause:{e.Message}");
             }
-            _logger.Warning("Could not get local host ip address, will use 127.0.0.1 instead.");
+            Logger.Warning("Could not get local host ip address, will use 127.0.0.1 instead.");
             return localAddress;
         }
 

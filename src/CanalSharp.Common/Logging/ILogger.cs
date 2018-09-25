@@ -1,17 +1,16 @@
-﻿using System;
-
+﻿
 namespace CanalSharp.Common.Logging
 {
     public interface ILogger
     {
-        void Debug(String message);
+        void Debug(string message);
 
-        void Info(String message);
+        void Info(string message);
 
-        void Warning(String message);
+        void Warning(string message);
 
-        void Error(String message, System.Exception exception);
+        void Error(string message, System.Exception exception);
 
-        void Trace(String message);
+        void Trace(string message);
     }
 }
