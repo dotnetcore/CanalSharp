@@ -16,7 +16,7 @@ namespace CanalSharp.Client.Impl
 {
     public class SimpleCanalConnector : ChannelHandlerAdapter, ICanalConnector
     {
-        private readonly ILogger _logger = LogManager.GetLogger(typeof(SimpleCanalConnector));
+        private readonly ICanalSharpLogger _logger = CanalSharpLogManager.GetLogger(typeof(SimpleCanalConnector));
         public string Address { get; set; }
         public int Port { get; set; }
         public string Username { get; set; }
@@ -167,7 +167,7 @@ namespace CanalSharp.Client.Impl
                     {
                         Destination = _clientIdentity.Destination,
                         ClientId = _clientIdentity.ClientId.ToString(),
-                        Filter = _filter != null ? _filter : ""
+                        Filter = _filter ?? ""
                     }.ToByteString()
                 }.ToByteArray();
 
@@ -181,6 +181,7 @@ namespace CanalSharp.Client.Impl
                 }
 
                 _clientIdentity.Filter = filter;
+                _logger.Debug("Subscribe success. Filter: "+ filter);
             }
             catch (Exception e)
             {
@@ -460,6 +461,7 @@ namespace CanalSharp.Client.Impl
                     }
 
                     _connected = _tcpClient.Connected;
+                    _logger.Debug($"Canal connect success. IP: {Address}, Port: {Port}");
                 }
             }
             catch (Exception e)

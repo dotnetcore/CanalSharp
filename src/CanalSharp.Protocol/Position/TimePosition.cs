@@ -2,7 +2,7 @@
 {
     public class TimePosition: Position
     {
-        protected long? Timestamp { get; set; }
+        protected long? Timestamp { get; }
 
         public TimePosition(long? timestamp)
         {

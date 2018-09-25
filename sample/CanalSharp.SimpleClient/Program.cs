@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using CanalSharp.Client.Impl;
+using CanalSharp.Common.Logging;
+using CanalSharp.Logging.NLog;
 using Com.Alibaba.Otter.Canal.Protocol;
+using NLog;
+using NLog.Config;
 
 namespace CanalSharp.SimpleClient
 {
@@ -11,6 +16,12 @@ namespace CanalSharp.SimpleClient
     {
         static void Main(string[] args)
         {
+            LogManager.Configuration = new XmlLoggingConfiguration("NLog.Config");
+            var logger = LogManager.GetLogger("test");
+            logger.Debug("Nlog enabled.");
+            //设置nlog
+            CanalSharpLogManager.SetLoggerFactory(new NLogLoggerFactory());
+
             //canal 配置的 destination，默认为 example
             var destination = "example";
             //创建一个简单CanalClient连接对象（此对象不支持集群）传入参数分别为 canal地址、端口、destination、用户名、密码
@@ -27,7 +38,7 @@ namespace CanalSharp.SimpleClient
                 var batchId = message.Id;
                 if (batchId == -1 || message.Entries.Count <= 0)
                 {
-                    Console.WriteLine("=====没有数据了=====");
+//                    Console.WriteLine("=====没有数据了=====");
                     Thread.Sleep(300);
                     continue;
                 }
