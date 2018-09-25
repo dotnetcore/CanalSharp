@@ -4,21 +4,21 @@ namespace CanalSharp.Common.Logging
 {
     public static class CanalSharpLogManager
     {
-        private static readonly ILoggerFactory DefaultLoggerFactory = new NullLoggerFactory();
-        private static ILoggerFactory _loggerFactory;
+        private static readonly ICanalSharpLoggerFactory DefaultLoggerFactory = new CanalSharpNullLoggerFactory();
+        private static ICanalSharpLoggerFactory _loggerFactory;
 
-        public static ILogger GetLogger(Type type)
+        public static ICanalSharpLogger GetLogger(Type type)
         {
             var loggerFactory = _loggerFactory ?? DefaultLoggerFactory;
             return loggerFactory.CreateLogger(type);
         }
 
-        public static ILogger GetLogger<T>()
+        public static ICanalSharpLogger GetLogger<T>()
         {
             return GetLogger(typeof(T));
         }
 
-        public static void SetLoggerFactory(ILoggerFactory loggerFactory)
+        public static void SetLoggerFactory(ICanalSharpLoggerFactory loggerFactory)
         {
             _loggerFactory = loggerFactory;
         }

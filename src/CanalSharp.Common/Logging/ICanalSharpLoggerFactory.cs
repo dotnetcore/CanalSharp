@@ -2,8 +2,8 @@
 
 namespace CanalSharp.Common.Logging
 {
-    public interface ILoggerFactory
+    public interface ICanalSharpLoggerFactory
     {
-        ILogger CreateLogger(Type type);
+        ICanalSharpLogger CreateLogger(Type type);
     }
 }

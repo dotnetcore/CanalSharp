@@ -16,7 +16,7 @@ namespace CanalSharp.Client.Impl
 {
     public class SimpleCanalConnector : ChannelHandlerAdapter, ICanalConnector
     {
-        private readonly ILogger _logger = CanalSharpLogManager.GetLogger(typeof(SimpleCanalConnector));
+        private readonly ICanalSharpLogger _logger = CanalSharpLogManager.GetLogger(typeof(SimpleCanalConnector));
         public string Address { get; set; }
         public int Port { get; set; }
         public string Username { get; set; }

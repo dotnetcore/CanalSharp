@@ -2,11 +2,11 @@
 
 namespace CanalSharp.Common.Logging
 {
-    public class NullLoggerFactory : ILoggerFactory
+    public class CanalSharpNullLoggerFactory : ICanalSharpLoggerFactory
     {
-        public ILogger CreateLogger(Type type)
+        public ICanalSharpLogger CreateLogger(Type type)
         {
-            return new NullLogger();
+            return new CanalSharpNullLogger();
         }
     }
 }

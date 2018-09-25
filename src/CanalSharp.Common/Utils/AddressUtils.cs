@@ -12,7 +12,7 @@ namespace CanalSharp.Common.Utils
 
     public class AddressUtils
     {
-        private static readonly ILogger Logger = CanalSharpLogManager.GetLogger(typeof(AddressUtils));
+        private static readonly ICanalSharpLogger Logger = CanalSharpLogManager.GetLogger(typeof(AddressUtils));
         private static  string  LOCALHOST_IP = "127.0.0.1";
         private static string EMPTY_IP     = "0.0.0.0";
         private static readonly Regex IpPattern   = new Regex("[0-9]{1,3}(\\.[0-9]{1,3}){3,}");

@@ -1,7 +1,7 @@
 ﻿
 namespace CanalSharp.Common.Logging
 {
-    public interface ILogger
+    public interface ICanalSharpLogger
     {
         void Debug(string message);
 

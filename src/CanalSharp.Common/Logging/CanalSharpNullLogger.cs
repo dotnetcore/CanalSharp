@@ -2,7 +2,7 @@
 
 namespace CanalSharp.Common.Logging
 {
-    internal class NullLogger : ILogger
+    internal class CanalSharpNullLogger : ICanalSharpLogger
     {
         public void Debug(string message)
         {
