@@ -167,7 +167,7 @@ namespace CanalSharp.Client.Impl
                     {
                         Destination = _clientIdentity.Destination,
                         ClientId = _clientIdentity.ClientId.ToString(),
-                        Filter = _filter != null ? _filter : ""
+                        Filter = _filter ?? ""
                     }.ToByteString()
                 }.ToByteArray();
 
@@ -181,6 +181,7 @@ namespace CanalSharp.Client.Impl
                 }
 
                 _clientIdentity.Filter = filter;
+                _logger.Debug("Subscribe success. Filter: "+ filter);
             }
             catch (Exception e)
             {
@@ -460,6 +461,7 @@ namespace CanalSharp.Client.Impl
                     }
 
                     _connected = _tcpClient.Connected;
+                    _logger.Debug($"Canal connect success. IP: {Address}, Port: {Port}");
                 }
             }
             catch (Exception e)
