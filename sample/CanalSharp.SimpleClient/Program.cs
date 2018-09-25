@@ -21,8 +21,9 @@ namespace CanalSharp.SimpleClient
             connector.Subscribe(".*\\\\..*");
             while (true)
             {
-                //获取消息数据
-                var message = connector.Get(5000);
+                //获取数据 1024表示数据大小 单位为字节
+                var message = connector.Get(1024);
+                //批次id 可用于回滚
                 var batchId = message.Id;
                 if (batchId == -1 || message.Entries.Count <= 0)
                 {
