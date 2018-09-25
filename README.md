@@ -14,13 +14,13 @@ CanalSharp 是阿里巴巴开源项目 Canal 的 .NET 客户端。为 .NET 开�
 5. 业务cache刷新
 6. 价格变化等重要业务消息
 
-关于 Canal 的更多信息请访问 https://github.com/alibaba/canal
+关于 Canal 的更多信息请访问 https://github.com/alibaba/canal/wiki
 
 ## 二.如何使用
 
 1.安装Canal
 
-Canal的安装以及配置使用请查看 https://github.com/alibaba/canal
+Canal的安装以及配置使用请查看 https://github.com/alibaba/canal/wiki/QuickStart
 
 2.建立一个.NET Core App项目
 
@@ -40,7 +40,7 @@ var connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destinati
 //连接 Canal
 connector.Connect();
 //订阅，同时传入Filter，如果不传则以Canal的Filter为准。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
-connector.Subscribe("");
+connector.Subscribe(".*\\\\..*");
 //获取消息并且需要发送Ack表示消费成功
 connector.Get(batchSize);
 //获取消息但是不需要发送Ack来表示消费成功
