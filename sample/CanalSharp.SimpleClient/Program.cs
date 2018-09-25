@@ -18,7 +18,7 @@ namespace CanalSharp.SimpleClient
             //连接 Canal
             connector.Connect();
             //订阅，同时传入Filter，如果不传则以Canal的Filter为准。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
-            connector.Subscribe("");
+            connector.Subscribe(".*\\\\..*");
             while (true)
             {
                 //获取消息数据
@@ -26,8 +26,9 @@ namespace CanalSharp.SimpleClient
                 var batchId = message.Id;
                 if (batchId == -1 || message.Entries.Count <= 0)
                 {
-                    Console.WriteLine("没有数据了.............");
+                    Console.WriteLine("=====没有数据了=====");
                     Thread.Sleep(300);
+                    continue;
                 }
                 PrintEntry(message.Entries);
             }
@@ -67,7 +68,7 @@ namespace CanalSharp.SimpleClient
                         }
                         else if (eventType == EventType.Insert)
                         {
-                            PrintColumn(rowData.BeforeColumns.ToList());
+                            PrintColumn(rowData.AfterColumns.ToList());
                         }
                         else
                         {
