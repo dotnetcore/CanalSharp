@@ -6,7 +6,7 @@ services:
     image: mysql:5.7
     container_name: mysql-5.7
     ports:
-      - "3306:3306"
+      - "4406:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=000000
     networks:
