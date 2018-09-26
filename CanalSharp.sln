@@ -26,7 +26,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Common", "src\Ca
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 sample", "04 sample", "{A4650FA0-4725-4956-90D3-F462F3C7474F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanalSharp.SimpleClient", "sample\CanalSharp.SimpleClient\CanalSharp.SimpleClient.csproj", "{CE9C0E45-F613-4E28-89EE-7F646B028BFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.SimpleClient", "sample\CanalSharp.SimpleClient\CanalSharp.SimpleClient.csproj", "{CE9C0E45-F613-4E28-89EE-7F646B028BFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "logging", "logging", "{37A77DF6-2765-4834-B0F2-4C58EB19D72C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanalSharp.Logging.NLog", "src\Logging\CanalSharp.Logging.NLog\CanalSharp.Logging.NLog.csproj", "{4C4796DA-78D7-46E9-B633-F9916EDC94FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanalSharp.Logging.Microsoft.Extensions.Logging", "src\Logging\CanalSharp.Logging.Microsoft.Extensions.Logging\CanalSharp.Logging.Microsoft.Extensions.Logging.csproj", "{EBBB57C0-B8CF-4705-863F-3F990D613651}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +60,14 @@ Global
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4796DA-78D7-46E9-B633-F9916EDC94FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4796DA-78D7-46E9-B633-F9916EDC94FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4796DA-78D7-46E9-B633-F9916EDC94FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4796DA-78D7-46E9-B633-F9916EDC94FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBBB57C0-B8CF-4705-863F-3F990D613651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBBB57C0-B8CF-4705-863F-3F990D613651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBBB57C0-B8CF-4705-863F-3F990D613651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBBB57C0-B8CF-4705-863F-3F990D613651}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +78,9 @@ Global
 		{B9782080-16BD-4328-A394-3EC8D9B49326} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB} = {A4650FA0-4725-4956-90D3-F462F3C7474F}
+		{37A77DF6-2765-4834-B0F2-4C58EB19D72C} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
+		{4C4796DA-78D7-46E9-B633-F9916EDC94FB} = {37A77DF6-2765-4834-B0F2-4C58EB19D72C}
+		{EBBB57C0-B8CF-4705-863F-3F990D613651} = {37A77DF6-2765-4834-B0F2-4C58EB19D72C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FD9B9146-8418-4F80-A666-9B47BE4F9C9C}

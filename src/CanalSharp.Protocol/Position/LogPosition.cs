@@ -2,8 +2,8 @@
 {
     public class LogPosition: Position
     {
-        public LogIdentity Identity { get; set; }
-        private EntryPosition Postion { get; set; }
+        public LogIdentity Identity { get; }
+        private EntryPosition Postion { get; }
 
         public override int GetHashCode()
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CanalSharp.Common.Alarm
+﻿namespace CanalSharp.Common.Alarm
 {
     /// <summary>
     ///  canal报警处理机制

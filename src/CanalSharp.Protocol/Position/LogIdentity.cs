@@ -5,9 +5,9 @@ namespace CanalSharp.Protocol.Position
     public class LogIdentity:Position
     {
         // 链接服务器的地址
-        public SocketAddress SourceAddress { get; set; }                         
+        public SocketAddress SourceAddress { get; }                         
         // 对应的slaveId
-        public long? SlaveId { get; set; }
+        public long? SlaveId { get; }
 
         public LogIdentity()
         {

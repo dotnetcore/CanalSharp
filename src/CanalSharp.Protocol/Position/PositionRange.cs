@@ -6,7 +6,9 @@ namespace CanalSharp.Protocol.Position
     public class PositionRange<T> where T:Position
     {
         public T Start { get; set; }
-        // add by ljh at 2012-09-05，用于记录一个可被ack的位置，保证每次提交到cursor中的位置是一个完整事务的结束
+        /// <summary>
+        /// add by ljh at 2012-09-05，用于记录一个可被ack的位置，保证每次提交到cursor中的位置是一个完整事务的结束
+        /// </summary>
         public T Ack { get; set; }
         public T End { get; set; }
 
