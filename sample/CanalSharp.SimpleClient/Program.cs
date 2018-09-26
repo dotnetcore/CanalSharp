@@ -58,7 +58,6 @@ namespace CanalSharp.SimpleClient
                 {
                     continue;
                 }
-
                 RowChange rowChange = null;
 
                 try
