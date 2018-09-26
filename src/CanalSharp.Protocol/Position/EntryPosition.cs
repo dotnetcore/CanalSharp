@@ -2,14 +2,15 @@
 
 namespace CanalSharp.Protocol.Position
 {
-    public class EntryPosition:TimePosition
+    public class EntryPosition : TimePosition
     {
-        public static  int EVENTIDENTITY_SEGMENT = 3;
-        public static char EVENTIDENTITY_SPLIT = (char)5;
+        public const int EVENTIDENTITY_SEGMENT = 3;
+        public const char EVENTIDENTITY_SPLIT = (char) 5;
 
         public bool Included => false;
 
         public string JournalName { get; set; }
+
         public long? Position { get; set; }
 
         /// <summary>
@@ -18,28 +19,28 @@ namespace CanalSharp.Protocol.Position
         public long? ServerId { get; set; }
 
         public string Gtid = null;
-        
+
 
         public EntryPosition() : base(null)
         {
-
         }
 
-        public EntryPosition(long? timestamp):this(null,null,timestamp)
+        public EntryPosition(long? timestamp) : this(null, null, timestamp)
         {
         }
 
-        public EntryPosition(string journalName, long? position):this(journalName,position,null)
+        public EntryPosition(string journalName, long? position) : this(journalName, position, null)
         {
         }
 
-        public EntryPosition(string journalName, long? position, long? timestamp):base(timestamp)
+        public EntryPosition(string journalName, long? position, long? timestamp) : base(timestamp)
         {
             JournalName = journalName;
             Position = position;
         }
 
-        public EntryPosition(string journalName, long position, long timestamp, long? serverId):this(journalName, position, timestamp)
+        public EntryPosition(string journalName, long position, long timestamp, long? serverId) : this(journalName,
+            position, timestamp)
         {
             ServerId = serverId;
         }
@@ -50,7 +51,7 @@ namespace CanalSharp.Protocol.Position
             var result = base.GetHashCode();
             result = prime * result + ((JournalName == null) ? 0 : JournalName.GetHashCode());
             result = prime * result + ((Position == null) ? 0 : Position.GetHashCode());
-            // 手写equals，自动生成时需注意
+            // 手写 equals，自动生成时需注意
             result = prime * result + ((Timestamp == null) ? 0 : Timestamp.GetHashCode());
             return result;
         }
@@ -61,14 +62,18 @@ namespace CanalSharp.Protocol.Position
             {
                 return true;
             }
+
             if (!base.Equals(obj))
             {
                 return false;
             }
-            if (!(obj is EntryPosition)) {
+
+            if (!(obj is EntryPosition))
+            {
                 return false;
             }
-            var other = (EntryPosition)obj;
+
+            var other = (EntryPosition) obj;
             if (JournalName == null)
             {
                 if (other.JournalName != null)
@@ -80,6 +85,7 @@ namespace CanalSharp.Protocol.Position
             {
                 return false;
             }
+
             if (Position == null)
             {
                 if (other.Position != null)
@@ -91,6 +97,7 @@ namespace CanalSharp.Protocol.Position
             {
                 return false;
             }
+
             // 手写equals，自动生成时需注意
             if (Timestamp == null)
             {
@@ -103,6 +110,7 @@ namespace CanalSharp.Protocol.Position
             {
                 return false;
             }
+
             return true;
         }
 

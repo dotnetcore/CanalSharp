@@ -1,6 +1,6 @@
 ﻿namespace CanalSharp.Protocol.Position
 {
-    public class TimePosition: Position
+    public class TimePosition : Position
     {
         protected long? Timestamp { get; }
 
@@ -23,14 +23,18 @@
             {
                 return true;
             }
+
             if (obj == null)
             {
                 return false;
             }
-            if (!(obj is TimePosition)) {
+
+            if (!(obj is TimePosition))
+            {
                 return false;
             }
-            var other = (TimePosition)obj;
+
+            var other = (TimePosition) obj;
             if (Timestamp == null)
             {
                 if (other.Timestamp != null)
@@ -42,6 +46,7 @@
             {
                 return false;
             }
+
             return true;
         }
     }

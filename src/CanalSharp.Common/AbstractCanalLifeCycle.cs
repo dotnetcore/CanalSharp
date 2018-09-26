@@ -4,7 +4,10 @@ namespace CanalSharp.Common
 {
     public abstract class AbstractCanalLifeCycle : ICanalLifeCycle
     {
-        protected volatile bool Running = false; // 是否处于运行中
+        /// <summary>
+        /// 是否处于运行中
+        /// </summary>
+        protected volatile bool Running; 
 
         public bool IsStart()
         {

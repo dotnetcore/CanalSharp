@@ -1,13 +1,15 @@
 ﻿using CanalSharp.Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace CanalSharp.Common.Alarm.Impl
 {
     public class LogAlarmHandler : ICanalAlarmHandler
     {
-        private readonly ICanalSharpLogger _logger = CanalSharpLogManager.GetLogger(typeof(LogAlarmHandler));
+        private readonly ILogger _logger = CanalSharpLogManager.LoggerFactory.CreateLogger<LogAlarmHandler>();
+
         public void SendAlarm(string destination, string msg)
         {
-            _logger.Warning($"destination:{destination}[{msg}]");
+            _logger.LogWarning($"destination:{destination}[{msg}]");
         }
     }
 }

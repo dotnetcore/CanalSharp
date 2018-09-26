@@ -8,13 +8,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\CanalSharp.Client\CanalSharp.Client.csproj" />
     <ProjectReference Include="..\..\src\CanalSharp.Protocol\CanalSharp.Protocol.csproj" />
-    <ProjectReference Include="..\..\src\Logging\CanalSharp.Logging.NLog\CanalSharp.Logging.NLog.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="NLog.Config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.3.0" />
   </ItemGroup>
 
 </Project>

@@ -6,29 +6,34 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using CanalSharp.Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace CanalSharp.Common.Utils
 {
-
     public class AddressUtils
     {
-        private static readonly ICanalSharpLogger Logger = CanalSharpLogManager.GetLogger(typeof(AddressUtils));
-        private static  string  LOCALHOST_IP = "127.0.0.1";
-        private static string EMPTY_IP     = "0.0.0.0";
-        private static readonly Regex IpPattern   = new Regex("[0-9]{1,3}(\\.[0-9]{1,3}){3,}");
+        private static readonly ILogger Logger;
+        private static string LOCALHOST_IP = "127.0.0.1";
+        private static string EMPTY_IP = "0.0.0.0";
+        private static readonly Regex IpPattern = new Regex("[0-9]{1,3}(\\.[0-9]{1,3}){3,}");
 
+        static AddressUtils()
+        {
+            Logger = CanalSharpLogManager.LoggerFactory.CreateLogger<AddressUtils>();
+        }
 
         public static bool IsAvailablePort(int port)
         {
             TcpListener ss = null;
             try
             {
-                ss = new TcpListener(IPAddress.Any,port);
+                ss = new TcpListener(IPAddress.Any, port);
                 ss.Start();
                 return true;
             }
             catch (IOException e)
             {
+                Logger.LogError($"Start tcp listener failed: {e}");
                 return false;
             }
             finally
@@ -41,7 +46,7 @@ namespace CanalSharp.Common.Utils
                     }
                     catch (IOException e)
                     {
-
+                        Logger.LogError($"Stop tcp listener failed: {e}");
                     }
                 }
             }
@@ -96,8 +101,10 @@ namespace CanalSharp.Common.Utils
             }
             catch (System.Exception e)
             {
-                Logger.Warning($"Failed to retriving local host ip address, try scan network card ip address. cause: {e.Message}");
+                Logger.LogWarning(
+                    $"Failed to retrieving local host ip address, try scan network card ip address. cause: {e}");
             }
+
             try
             {
                 foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
@@ -118,11 +125,11 @@ namespace CanalSharp.Common.Utils
             }
             catch (System.Exception e)
             {
-                Logger.Warning($"Failed to retriving network card ip address. cause:{e.Message}");
+                Logger.LogWarning($"Failed to retrieving network card ip address. cause:{e}");
             }
-            Logger.Warning("Could not get local host ip address, will use 127.0.0.1 instead.");
+
+            Logger.LogWarning("Could not get local host ip address, will use 127.0.0.1 instead.");
             return localAddress;
         }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CanalSharp.Common
+﻿namespace CanalSharp.Common
 {
     public interface ICanalLifeCycle
     {
