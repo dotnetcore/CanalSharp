@@ -97,6 +97,7 @@ connector.GetWithoutAck(batchSize);
 
 ````shell
 git clone https://github.com/CanalSharp/CanalSharp.git
+cd CanalSharp
 cd docker
 docker-compose up -d
 ````
