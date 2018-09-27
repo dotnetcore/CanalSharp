@@ -1,5 +1,4 @@
-
-# CanalSharp  　　　　　　　　　　　　　　　　　　　　　　[中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
+# CanalSharp                                              |[中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
 
 ## Ⅰ.What is CanalSharp
 
@@ -145,6 +144,7 @@ CanalSharp clustering support
 ## Ⅷ Contribute
 
 We gladly accept community contributions.
+
 1.fork the CanalSharp Project
 
 2.make changes to it
