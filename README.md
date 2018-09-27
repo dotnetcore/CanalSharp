@@ -1,5 +1,5 @@
 
-# CanalSharp  　　　　　　　　　　　　　　　　　　　　　　[中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
+# CanalSharp                                                   [中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
 
 ## Ⅰ.What is CanalSharp
 
