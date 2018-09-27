@@ -144,6 +144,7 @@ CanalSharp clustering support
 ## Ⅷ Contribute
 
 We gladly accept community contributions.
+
 1.fork the CanalSharp Project
 
 2.make changes to it
