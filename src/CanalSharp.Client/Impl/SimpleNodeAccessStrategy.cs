@@ -5,14 +5,13 @@ using System.Net;
 
 namespace CanalSharp.Client.Impl
 {
-
     /// <summary>
-    /// 简单版本的node访问实现
+    /// 简单版本的 node 访问实现
     /// </summary>
     public class SimpleNodeAccessStrategy : ICanalNodeAccessStrategy
     {
         private readonly List<SocketAddress> _nodes = new List<SocketAddress>();
-        private int _index = 0;
+        private int _index;
 
         public SimpleNodeAccessStrategy(List<SocketAddress> nodes)
         {
@@ -21,7 +20,7 @@ namespace CanalSharp.Client.Impl
                 throw new ArgumentException("at least 1 node required.", nameof(nodes));
             }
 
-            this._nodes.AddRange(nodes);
+            _nodes.AddRange(nodes);
         }
 
         public SocketAddress NextNode()

@@ -1,8 +1,9 @@
 ﻿namespace CanalSharp.Protocol.Position
 {
-    public class LogPosition: Position
+    public class LogPosition : Position
     {
         public LogIdentity Identity { get; }
+
         private EntryPosition Postion { get; }
 
         public override int GetHashCode()
@@ -20,14 +21,18 @@
             {
                 return true;
             }
+
             if (obj == null)
             {
                 return false;
             }
-            if (!(obj is LogPosition)) {
+
+            if (!(obj is LogPosition))
+            {
                 return false;
             }
-            var other = (LogPosition)obj;
+
+            var other = (LogPosition) obj;
             if (Identity == null)
             {
                 if (other.Identity != null)
@@ -39,6 +44,7 @@
             {
                 return false;
             }
+
             if (Postion == null)
             {
                 if (other.Postion != null)
@@ -50,6 +56,7 @@
             {
                 return false;
             }
+
             return true;
         }
     }
