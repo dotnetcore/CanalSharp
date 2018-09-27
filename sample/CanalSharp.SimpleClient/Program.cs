@@ -5,30 +5,34 @@ using System.Linq;
 using System.Threading;
 using CanalSharp.Client.Impl;
 using CanalSharp.Common.Logging;
-using CanalSharp.Logging.NLog;
 using Com.Alibaba.Otter.Canal.Protocol;
+using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Config;
+using NLog.Extensions.Logging;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace CanalSharp.SimpleClient
 {
-    class Program
+    static class Program
     {
+        private static ILogger _logger;
+
         static void Main(string[] args)
         {
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.Config");
             var logger = LogManager.GetLogger("test");
             logger.Debug("Nlog enabled.");
-            //设置nlog
-            CanalSharpLogManager.SetLoggerFactory(new NLogLoggerFactory());
-
+            //设置 NLog
+            CanalSharpLogManager.LoggerFactory.AddNLog();
+            _logger = CanalSharpLogManager.LoggerFactory.CreateLogger("Program");
             //canal 配置的 destination，默认为 example
             var destination = "example";
-            //创建一个简单CanalClient连接对象（此对象不支持集群）传入参数分别为 canal地址、端口、destination、用户名、密码
+            //创建一个简单 CanalClient 连接对象（此对象不支持集群）传入参数分别为 canal 地址、端口、destination、用户名、密码
             var connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destination, "", "");
             //连接 Canal
             connector.Connect();
-            //订阅，同时传入Filter，如果不传则以Canal的Filter为准。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
+            //订阅，同时传入 Filter，如果不传则以Canal的Filter为准。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
             connector.Subscribe(".*\\\\..*");
             while (true)
             {
@@ -38,10 +42,11 @@ namespace CanalSharp.SimpleClient
                 var batchId = message.Id;
                 if (batchId == -1 || message.Entries.Count <= 0)
                 {
-//                    Console.WriteLine("=====没有数据了=====");
+                    _logger.LogInformation("=====没有数据了=====");
                     Thread.Sleep(300);
                     continue;
                 }
+
                 PrintEntry(message.Entries);
             }
         }
@@ -58,6 +63,7 @@ namespace CanalSharp.SimpleClient
                 {
                     continue;
                 }
+
                 RowChange rowChange = null;
 
                 try
@@ -67,7 +73,7 @@ namespace CanalSharp.SimpleClient
                 }
                 catch (Exception e)
                 {
-
+                    _logger.LogError(e.ToString());
                 }
 
                 if (rowChange != null)
@@ -75,7 +81,7 @@ namespace CanalSharp.SimpleClient
                     //变更类型 insert/update/delete 等等
                     EventType eventType = rowChange.EventType;
                     //输出binlog信息 表名 数据库名 变更类型
-                    Console.WriteLine(
+                    _logger.LogInformation(
                         $"================> binlog[{entry.Header.LogfileName}:{entry.Header.LogfileOffset}] , name[{entry.Header.SchemaName},{entry.Header.TableName}] , eventType :{eventType}");
 
                     //输出 insert/update/delete 变更类型列数据
@@ -91,14 +97,13 @@ namespace CanalSharp.SimpleClient
                         }
                         else
                         {
-                            Console.WriteLine("-------> before");
+                            _logger.LogInformation("-------> before");
                             PrintColumn(rowData.BeforeColumns.ToList());
-                            Console.WriteLine("-------> after");
+                            _logger.LogInformation("-------> after");
                             PrintColumn(rowData.AfterColumns.ToList());
                         }
                     }
                 }
-
             }
         }
 

@@ -51,6 +51,7 @@ namespace CanalSharp.Client
         /// <param name="batchSize"></param>
         /// <returns></returns>
         Message Get(int batchSize);
+
         /// <summary>
         /// 获取数据，自动进行确认
         ///  该方法返回的条件：
@@ -61,7 +62,7 @@ namespace CanalSharp.Client
         /// <param name="timeout"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-       Message Get(int batchSize, long? timeout, int? unit);
+        Message Get(int batchSize, long? timeout, int? unit);
 
         /// <summary>
         /// 不指定 position 获取事件，该方法返回的条件: 尝试拿batchSize条记录，有多少取多少，不会阻塞等待

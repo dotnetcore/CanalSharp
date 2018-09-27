@@ -2,7 +2,7 @@
 
 namespace CanalSharp.Client.Impl.Running
 {
-    public class ClientRunningMonitor: AbstractCanalLifeCycle
+    public class ClientRunningMonitor : AbstractCanalLifeCycle
     {
     }
 }

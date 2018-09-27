@@ -5,21 +5,23 @@ namespace CanalSharp.Protocol
     [Serializable]
     public class ClientIdentity
     {
-        public  string Destination { get; set; }
-        public  short ClientId { get; set; }
-        public  string Filter { get; set; }
+        public string Destination { get; set; }
+
+        public short ClientId { get; set; }
+
+        public string Filter { get; set; }
 
         public ClientIdentity()
         {
-
         }
 
-        public ClientIdentity(string destination,short clientId)
+        public ClientIdentity(string destination, short clientId)
         {
             Destination = destination;
             ClientId = clientId;
         }
-        public ClientIdentity(string destination, short clientId,string filter)
+
+        public ClientIdentity(string destination, short clientId, string filter)
         {
             Destination = destination;
             ClientId = clientId;
@@ -46,18 +48,23 @@ namespace CanalSharp.Protocol
             {
                 return true;
             }
+
             if (obj == null)
             {
                 return false;
             }
-            if (!(obj is ClientIdentity)) {
+
+            if (!(obj is ClientIdentity))
+            {
                 return false;
             }
-            var other = (ClientIdentity)obj;
+
+            var other = (ClientIdentity) obj;
             if (ClientId != other.ClientId)
             {
                 return false;
             }
+
             if (Destination == null)
             {
                 if (other.Destination != null)
@@ -69,6 +76,7 @@ namespace CanalSharp.Protocol
             {
                 return false;
             }
+
             return true;
         }
     }

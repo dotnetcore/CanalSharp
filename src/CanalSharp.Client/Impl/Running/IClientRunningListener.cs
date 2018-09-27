@@ -1,10 +1,7 @@
-﻿
-
-using System.Net;
+﻿using System.Net;
 
 namespace CanalSharp.Client.Impl.Running
 {
-
     /// <summary>
     /// 触发一下mainstem发生切换
     /// </summary>

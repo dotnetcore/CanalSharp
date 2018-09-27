@@ -7,6 +7,7 @@
   
   <ItemGroup>
     <PackageReference Include="DotNetty.Codecs.Protobuf" Version="0.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
