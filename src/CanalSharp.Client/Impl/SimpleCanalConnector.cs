@@ -434,8 +434,8 @@ namespace CanalSharp.Client.Impl
 
                 var ca = new ClientAuth()
                 {
-                    Username = Username ?? "",
-                    Password = ByteString.CopyFromUtf8(Password ?? ""),
+                    Username = UserName ?? "",
+                    Password = ByteString.CopyFromUtf8(PassWord ?? ""),
                     NetReadTimeout = IdleTimeout,
                     NetWriteTimeout = IdleTimeout
                 };
