@@ -105,8 +105,8 @@ namespace CanalSharp.Client.Impl
         {
             Address = address;
             Port = port;
-            Username = username;
-            Password = password;
+            UserName = username;
+            UserName = password;
             SoTimeout = soTimeout;
             IdleTimeout = idleTimeout;
             _clientIdentity = new ClientIdentity(destination, (short) 1001);
