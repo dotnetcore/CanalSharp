@@ -101,6 +101,7 @@ for more detailed information please visit [Sample](https://github.com/CanalShar
 
 ````shell
 git clone https://github.com/CanalSharp/CanalSharp.git
+cd  CanalSharp
 cd docker
 docker-compose up -d
 ````

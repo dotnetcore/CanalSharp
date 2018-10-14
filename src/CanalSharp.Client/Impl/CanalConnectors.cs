@@ -31,8 +31,8 @@ namespace CanalSharp.Client.Impl
         {
             var canalConnector = new SimpleCanalConnector(address, port, username, password, destination)
             {
-                SoTimeout = 60 * 1000,
-                IdleTimeout = 60 * 60 * 1000
+                SoTimeOut = 60 * 1000,
+                IdleTimeOut = 60 * 60 * 1000
             };
             return canalConnector;
         }
