@@ -49,13 +49,10 @@ namespace CanalSharp.Client.Impl
         /// </summary>
         private string _filter;
 
-        private ISocketChannel _channel;
-        private Task<IChannel> _readableChannel;
-        private IChannel _writableChannel;
         private List<Compression> _supportedCompressions = new List<Compression>();
-        private static readonly object WriteDataLock = new object();
+        private static readonly object _writeDataLock = new object();
 
-        private static readonly object ReadDataLock = new object();
+        private static readonly object _readDataLock = new object();
 
         // 是否在 connect 链接成功后，自动执行 rollback 操作
         private bool _rollbackOnConnect = true;
@@ -83,12 +80,12 @@ namespace CanalSharp.Client.Impl
         /// <summary>
         ///  // milliseconds
         /// </summary>
-        public int SoTimeout { get; set; } = 60000;
+        public int SoTimeOut { get; set; } = 60000;
 
         /// <summary>
         /// client 和 server 之间的空闲链接超时的时间, 默认为1小时
         /// </summary>
-        public int IdleTimeout { get; set; } = 60 * 60 * 1000;
+        public int IdleTimeOut { get; set; } = 60 * 60 * 1000;
 
         public SimpleCanalConnector(string address, int port, string username, string password, string destination) :
             this(address, port, username, password, destination, 60000, 60 * 60 * 1000)
@@ -107,8 +104,8 @@ namespace CanalSharp.Client.Impl
             Port = port;
             UserName = username;
             UserName = password;
-            SoTimeout = soTimeout;
-            IdleTimeout = idleTimeout;
+            SoTimeOut = soTimeout;
+            IdleTimeOut = idleTimeout;
             _clientIdentity = new ClientIdentity(destination, (short) 1001);
         }
 
@@ -436,8 +433,8 @@ namespace CanalSharp.Client.Impl
                 {
                     Username = UserName ?? "",
                     Password = ByteString.CopyFromUtf8(PassWord ?? ""),
-                    NetReadTimeout = IdleTimeout,
-                    NetWriteTimeout = IdleTimeout
+                    NetReadTimeout = IdleTimeOut,
+                    NetWriteTimeout = IdleTimeOut
                 };
 
                 var packArray = new Packet()
@@ -469,7 +466,7 @@ namespace CanalSharp.Client.Impl
 
         private byte[] ReadNextPacket()
         {
-            lock (ReadDataLock)
+            lock (_readDataLock)
             {
                 var headerLength = ReadHeaderLength();
                 var receiveData = new byte[1024 * 2];
@@ -498,7 +495,7 @@ namespace CanalSharp.Client.Impl
 
         private void WriteWithHeader(byte[] body)
         {
-            lock (WriteDataLock)
+            lock (_writeDataLock)
             {
                 var len = body.Length;
                 var bytes = GetHeaderBytes(len);
