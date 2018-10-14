@@ -19,13 +19,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using CanalSharp.Common.Logging;
 using CanalSharp.Protocol;
 using CanalSharp.Protocol.Exception;
 using Com.Alibaba.Otter.Canal.Protocol;
 using DotNetty.Transport.Channels;
-using DotNetty.Transport.Channels.Sockets;
 using Google.Protobuf;
 using Microsoft.Extensions.Logging;
 
