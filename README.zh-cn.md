@@ -1,6 +1,6 @@
 
 # CanalSharp
-
+[![Build Status](https://travis-ci.org/CanalClient/CanalSharp.svg?branch=master)](https://travis-ci.org/CanalClient/CanalSharp)
 ## 一.CanalSharp是什么?
 
 CanalSharp 是阿里巴巴开源项目 Canal 的 .NET 客户端。为 .NET 开发者提供一个更友好的使用 Canal 的方式。Canal 是mysql数据库binlog的增量订阅&消费组件。
