@@ -1,5 +1,5 @@
 # CanalSharp                                              |[中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
-
+[![Build Status](https://travis-ci.org/CanalClient/CanalSharp.svg?branch=master)](https://travis-ci.org/CanalClient/CanalSharp)
 ## Ⅰ.What is CanalSharp
 
 CanalSharp is a .NET Client of alibaba's open source component `Canal`,and it provides .NET developer a much easier way to use Canal.
