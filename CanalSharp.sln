@@ -7,8 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Solution Items", "01 Sol
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		build\common.props = build\common.props
+		Jenkinsfile = Jenkinsfile
 		build\package.props = build\package.props
 		README.md = README.md
+		Release.sh = Release.sh
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
@@ -27,6 +29,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 sample", "04 sample", "{A4650FA0-4725-4956-90D3-F462F3C7474F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.SimpleClient", "sample\CanalSharp.SimpleClient\CanalSharp.SimpleClient.csproj", "{CE9C0E45-F613-4E28-89EE-7F646B028BFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{6DAC6D26-633E-46A3-AD71-D05342E5A9BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Logging.Microsoft.Extensions.Logging", "src\Logging\CanalSharp.Logging.Microsoft.Extensions.Logging\CanalSharp.Logging.Microsoft.Extensions.Logging.csproj", "{21843BC5-87AA-45A7-BAFB-A5A900E07F39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.Logging.NLog", "src\Logging\CanalSharp.Logging.NLog\CanalSharp.Logging.NLog.csproj", "{402D002B-8F01-48FD-834E-0A800D82CEBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +62,14 @@ Global
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21843BC5-87AA-45A7-BAFB-A5A900E07F39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21843BC5-87AA-45A7-BAFB-A5A900E07F39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21843BC5-87AA-45A7-BAFB-A5A900E07F39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21843BC5-87AA-45A7-BAFB-A5A900E07F39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{402D002B-8F01-48FD-834E-0A800D82CEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{402D002B-8F01-48FD-834E-0A800D82CEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{402D002B-8F01-48FD-834E-0A800D82CEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{402D002B-8F01-48FD-834E-0A800D82CEBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +80,9 @@ Global
 		{B9782080-16BD-4328-A394-3EC8D9B49326} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 		{B583684C-4E2F-42A5-8F08-1E3C4EE4C586} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
 		{CE9C0E45-F613-4E28-89EE-7F646B028BFB} = {A4650FA0-4725-4956-90D3-F462F3C7474F}
+		{6DAC6D26-633E-46A3-AD71-D05342E5A9BD} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
+		{21843BC5-87AA-45A7-BAFB-A5A900E07F39} = {6DAC6D26-633E-46A3-AD71-D05342E5A9BD}
+		{402D002B-8F01-48FD-834E-0A800D82CEBB} = {6DAC6D26-633E-46A3-AD71-D05342E5A9BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FD9B9146-8418-4F80-A666-9B47BE4F9C9C}
