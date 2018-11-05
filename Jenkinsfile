@@ -22,8 +22,12 @@ pipeline {
                 script {
                     result = sh (script: "git log -1 | grep '\\[Relase\\]'", returnStatus: true) 
                     if (result != 0) {
-                        sh "./Release.sh"
+                        sh "chmod +x Release.sh"
+						sh "./Release.sh"
                     }
+					else {
+						echo "not running"
+					}
                 }
             }
         }
