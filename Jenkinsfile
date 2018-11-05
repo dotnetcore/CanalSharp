@@ -20,16 +20,14 @@ pipeline {
         stage('Release') {
             when {
                 branch "master"
+                expression {
+                    result = sh (script: "git log -1 | grep '\\[Release\\]'", returnStatus: true) 
+                    return result == 0
+                }
             }
             steps {
-                script {
-                    result = sh (script: "git log -1 | grep '\\[Release\\]'", returnStatus: true) 
-                    if (result == 0) {
-                        sh "chmod +x Release.sh"
-						withEnv(["nugetkey=${env.NUGET_KEY}"]) {
-							sh "./Release.sh"
-						}
-                    }
+                withEnv(["nugetkey=${env.NUGET_KEY}"]) {
+                    sh "./Release.sh"
                 }
             }
         }
