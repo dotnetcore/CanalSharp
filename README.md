@@ -2,9 +2,9 @@
 
 travis：[![Build Status](https://travis-ci.org/CanalClient/CanalSharp.svg?branch=master)](https://travis-ci.org/CanalClient/CanalSharp)
 
-master：![Build Status](https://img.shields.io/jenkins/s/https/ci2.xcmaster.com/job/CanalSharpAuto/job/master.svg)
+master：[![Build Status](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/badge/icon)](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/)
 
-dev：![Build Status](https://img.shields.io/jenkins/s/https/ci2.xcmaster.com/job/CanalSharpAuto/job/dev.svg)
+dev：[![Build Status](https://ci2.xcmaster.com/job/CanalSharpAuto/job/dev/badge/icon)](https://ci2.xcmaster.com/job/CanalSharpAuto/job/dev/)
 
 ## Ⅰ.What is CanalSharp
 
