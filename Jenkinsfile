@@ -27,7 +27,7 @@ pipeline {
             }
             steps {
                 withEnv(["nugetkey=${env.NUGET_KEY}"]) {
-							sh "./Release.sh"
+                    sh "./Release.sh"
                 }
             }
         }
