@@ -5,6 +5,9 @@ pipeline {
             label 'slave-1'
         }
     }
+	environment {
+        NUGET_KEY     = credentials('CanalSharp_Nuget_key')
+    }
     triggers {
       githubPush()
     }
@@ -21,13 +24,12 @@ pipeline {
             steps {
                 script {
                     result = sh (script: "git log -1 | grep '\\[Relase\\]'", returnStatus: true) 
-                    if (result != 0) {
+                    if (result == 0) {
                         sh "chmod +x Release.sh"
-						sh "./Release.sh"
+						withEnv(["nugetkey=${env.NUGET_KEY}"]) {
+							sh "./Release.sh"
+						}
                     }
-					else {
-						echo "not running"
-					}
                 }
             }
         }
