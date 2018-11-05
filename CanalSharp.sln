@@ -7,8 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Solution Items", "01 Sol
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		build\common.props = build\common.props
+		Jenkinsfile = Jenkinsfile
 		build\package.props = build\package.props
 		README.md = README.md
+		Release.sh = Release.sh
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
