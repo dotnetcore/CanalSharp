@@ -1,7 +1,6 @@
 # CanalSharp                                              |[中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
-[![Build Status](https://travis-ci.org/CanalClient/CanalSharp.svg?branch=master)](https://travis-ci.org/CanalClient/CanalSharp)
 
-travis：![Build Status](https://travis-ci.org/CanalClient/CanalSharp.svg?branch=master)
+travis：[![Build Status](https://travis-ci.org/CanalClient/CanalSharp.svg?branch=master)](https://travis-ci.org/CanalClient/CanalSharp)
 
 master：![Build Status](https://img.shields.io/jenkins/s/https/ci2.xcmaster.com/job/CanalSharpAuto/job/master.svg)
 
