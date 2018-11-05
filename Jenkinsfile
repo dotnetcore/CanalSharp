@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 script {
-                    result = sh (script: "git log -1 | grep '\\[Relase\\]'", returnStatus: true) 
+                    result = sh (script: "git log -1 | grep '\\[Release\\]'", returnStatus: true) 
                     if (result == 0) {
                         sh "chmod +x Release.sh"
 						withEnv(["nugetkey=${env.NUGET_KEY}"]) {
