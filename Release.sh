@@ -4,12 +4,12 @@ set -e
 
 export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=0
 
-# 编译项目
+# 缂栬瘧椤圭洰
 echo "begin build..."
 dotnet build CanalSharp.sln -c Release
 echo "build success"
 
-# 创建nuget临时存放目录
+# 鍒涘缓nuget涓存椂瀛樻斁鐩綍
 publishdir=publish/nuget/$(date +%Y%m%d)
 
 mkdir $publishdir -p
@@ -18,7 +18,7 @@ publishdir=$(cd ${publishdir}; pwd)
 
 echo "begin pack..."
 
-# 打包项目 IPTools 并输出到临时存放目录
+# 鎵撳寘椤圭洰 IPTools 骞惰緭鍑哄埌涓存椂瀛樻斁鐩綍
 echo "pack CanalSharp.Client..."
 dotnet pack src/CanalSharp.Client/CanalSharp.Client.csproj -c Release -o ${publishdir}
 echo "packCanalSharp.Client success"
@@ -40,14 +40,14 @@ echo "pack CanalSharp.Protocol success"
 #echo "pack CanalSharp.Logging.NLog  success"
 
 
-# 发布到nuget.org
+# 鍙戝竷鍒皀uget.org
 echo "begin push..."
 for nugetfile in ${publishdir}/*; do
     dotnet nuget push $nugetfile -k ${nugetkey} -s https://api.nuget.org/v3/index.json
 done
 echo "push success"
 
-# 清理
+# 娓呯悊
 
 if [[ $publishdir != "/" ]] ; then
 	rm -rf ${publishdir}
