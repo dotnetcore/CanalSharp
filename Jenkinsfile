@@ -15,7 +15,7 @@ pipeline {
      stages {
         stage('Build') {
             steps {
-		    echo 'hello'
+		    sh 'dotnet build'
             }
         }
         stage('Release') {
