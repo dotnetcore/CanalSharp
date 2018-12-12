@@ -15,16 +15,13 @@ pipeline {
      stages {
         stage('Build') {
             steps {
-		    ciRelease action: 'check'
+		    echo 'hello'
             }
         }
         stage('Release') {
             when {
                 branch "master"
-                expression {
-                    result = sh (script: "git log -1 | grep '\\[Release\\]'", returnStatus: true) 
-                    return result == 0
-                }
+                expression { ciRelease action: 'check' }
             }
             steps {
                 withEnv(["nugetkey=${env.NUGET_KEY}"]) {
