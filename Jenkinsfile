@@ -1,5 +1,4 @@
 #!/usr/bin/env groovy Jenkinsfile
-library 'JenkinsSharedLibraries'
 pipeline {
     agent {
         node {
