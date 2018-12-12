@@ -15,7 +15,8 @@ pipeline {
      stages {
         stage('Build') {
             steps {
-		    ciRelease.check()
+		    ciRelease action: 'check'
+		    sh 'dotnet build'
             }
         }
         stage('Release') {
