@@ -1,7 +1,0 @@
-language: csharp
-solution: CanalSharp.sln
-mono: none
-dotnet: 2.1.302
-script:
-    - dotnet restore
-    - dotnet build
