@@ -21,8 +21,6 @@ namespace CanalSharp.SimpleClient
         static void Main(string[] args)
         {
             LogManager.Configuration = new XmlLoggingConfiguration("NLog.Config");
-            var logger = LogManager.GetLogger("test");
-            logger.Debug("Nlog enabled.");
             //设置 NLog
             CanalSharpLogManager.LoggerFactory.AddNLog();
             _logger = CanalSharpLogManager.LoggerFactory.CreateLogger("Program");
@@ -32,8 +30,11 @@ namespace CanalSharp.SimpleClient
             var connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destination, "", "");
             //连接 Canal
             connector.Connect();
-            //订阅，同时传入 Filter，如果不传则以Canal的Filter为准。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
-            connector.Subscribe(".*\\\\..*");
+            //订阅，同时传入 Filter。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
+            //允许所有数据 .*\\..*
+            //允许某个库数据 库名\\..*
+            //允许某些表 库名.表名,库名.表名
+            connector.Subscribe(".*\\..*");
             while (true)
             {
                 //获取数据 1024表示数据大小 单位为字节
@@ -42,7 +43,6 @@ namespace CanalSharp.SimpleClient
                 var batchId = message.Id;
                 if (batchId == -1 || message.Entries.Count <= 0)
                 {
-                    _logger.LogInformation("=====没有数据了=====");
                     Thread.Sleep(300);
                     continue;
                 }
