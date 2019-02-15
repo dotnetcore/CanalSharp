@@ -55,7 +55,7 @@ namespace CanalSharp.Client.Impl
         // 是否在 connect 链接成功后，自动执行 rollback 操作
         private bool _rollbackOnConnect = true;
 
-        private Message _message;
+//        private Message _message;
 
         // 是否自动化解析 Entry 对象, 如果考虑最大化性能可以延后解析
         private bool _lazyParseEntry = false;
@@ -174,15 +174,16 @@ namespace CanalSharp.Client.Impl
 
             try
             {
+                var sub = new Sub()
+                {
+                    Destination = _clientIdentity.Destination,
+                    ClientId = _clientIdentity.ClientId.ToString(),
+                    Filter = string.IsNullOrEmpty(filter)? ".*\\..*":filter
+                };
                 var pack = new Packet()
                 {
                     Type = PacketType.Subscription,
-                    Body = new Sub()
-                    {
-                        Destination = _clientIdentity.Destination,
-                        ClientId = _clientIdentity.ClientId.ToString(),
-                        Filter = _filter ?? ""
-                    }.ToByteString()
+                    Body = sub.ToByteString()
                 }.ToByteArray();
 
                 WriteWithHeader(pack);
@@ -195,6 +196,7 @@ namespace CanalSharp.Client.Impl
                 }
 
                 _clientIdentity.Filter = filter;
+                _filter = filter;
                 _logger.LogDebug($"Subscribe success. Filter: {filter}");
             }
             catch (Exception e)
