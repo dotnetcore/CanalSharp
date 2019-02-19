@@ -88,7 +88,7 @@ var connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destinati
 //connect to Canal
 connector.Connect();
 //Subscription,the parameter is a Filter,if we provided nothing it use Canal's default Filter. a filter is a rule for filtering data,data go throgh the filter will be passed in.
-connector.Subscribe(".*\\\\..*");
+connector.Subscribe(".*\\..*");
 
 //Get data with acknowledgement to indicate success
 connector.Get(batchSize);
