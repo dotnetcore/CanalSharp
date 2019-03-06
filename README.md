@@ -1,7 +1,6 @@
 # CanalSharp                                              |[中文](https://github.com/CanalSharp/CanalSharp/blob/master/README.zh-cn.md)
 
-
-master：[![Build Status](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/badge/icon)](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/)
+[![Build Status](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/badge/icon)](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/)
 
 ## What is CanalSharp?
 
