@@ -36,14 +36,15 @@ namespace CanalSharp.Client.Impl
         private readonly ClientIdentity _clientIdentity;
 
         /// <summary>
-        ///  // 代表 connected 是否已正常执行，因为有 HA，不代表在工作中
+        ///  To indicate whether the connector has been executed correctly.
+        /// Because of HA, it dose not mean at work.
         /// </summary>
         private volatile bool _connected;
 
         private volatile bool _running;
 
         /// <summary>
-        /// 记录上一次的 filter 提交值, 便于自动重试时提交
+        /// To recode the value submitted by the last filter, which is easy to submit when automatically retrying.
         /// </summary>
         private string _filter;
 
@@ -52,18 +53,18 @@ namespace CanalSharp.Client.Impl
 
         private static readonly object _readDataLock = new object();
 
-        // 是否在 connect 链接成功后，自动执行 rollback 操作
+        // Whether the rollback operation is performed automatically after the connector is successfully connected.
         private bool _rollbackOnConnect = true;
 
-//        private Message _message;
+        //        private Message _message;
 
-        // 是否自动化解析 Entry 对象, 如果考虑最大化性能可以延后解析
+        // Whether to automatically parse the Entry object. If you consider maximzing performance, you can delay parsing.
         private bool _lazyParseEntry = false;
         private TcpClient _tcpClient;
         private NetworkStream _channelNetworkStream;
 
         /// <summary>
-        /// 是否在 connect 链接成功后, 自动执行rollback操作
+        /// Whether to automatically run a rollback operation after the connection is successful.
         /// </summary>
         private bool _rollbackOnDisConnect = false;
 
@@ -81,7 +82,7 @@ namespace CanalSharp.Client.Impl
         public int SoTimeOut { get; set; } = 60000;
 
         /// <summary>
-        /// client 和 server 之间的空闲链接超时的时间, 默认为1小时
+        /// The timeout period for idle connections between client and server, default 1 hour.
         /// </summary>
         public int IdleTimeOut { get; set; } = 60 * 60 * 1000;
 
@@ -104,7 +105,7 @@ namespace CanalSharp.Client.Impl
             UserName = password;
             SoTimeOut = soTimeout;
             IdleTimeOut = idleTimeout;
-            _clientIdentity = new ClientIdentity(destination, (short) 1001);
+            _clientIdentity = new ClientIdentity(destination, (short)1001);
         }
 
         public void Connect()
@@ -178,7 +179,7 @@ namespace CanalSharp.Client.Impl
                 {
                     Destination = _clientIdentity.Destination,
                     ClientId = _clientIdentity.ClientId.ToString(),
-                    Filter = string.IsNullOrEmpty(filter)? ".*\\..*":filter
+                    Filter = string.IsNullOrEmpty(filter) ? ".*\\..*" : filter
                 };
                 var pack = new Packet()
                 {
@@ -284,8 +285,8 @@ namespace CanalSharp.Client.Impl
                 Destination = _clientIdentity.Destination,
                 ClientId = _clientIdentity.ClientId.ToString(),
                 FetchSize = size,
-                Timeout = (long) time,
-                Unit = (int) unit
+                Timeout = (long)time,
+                Unit = (int)unit
             };
             var packet = new Packet()
             {
@@ -305,38 +306,38 @@ namespace CanalSharp.Client.Impl
             switch (p.Type)
             {
                 case PacketType.Messages:
-                {
-                    if (!p.Compression.Equals(Compression.None))
                     {
-                        throw new CanalClientException("compression is not supported in this connector");
-                    }
-
-                    var messages = Messages.Parser.ParseFrom(p.Body);
-                    var result = new Message(messages.BatchId);
-                    if (_lazyParseEntry)
-                    {
-                        // byteString
-                        result.RawEntries = messages.Messages_.ToList();
-                    }
-                    else
-                    {
-                        foreach (var byteString in messages.Messages_)
+                        if (!p.Compression.Equals(Compression.None))
                         {
-                            result.Entries.Add(Entry.Parser.ParseFrom(byteString));
+                            throw new CanalClientException("compression is not supported in this connector");
                         }
-                    }
 
-                    return result;
-                }
+                        var messages = Messages.Parser.ParseFrom(p.Body);
+                        var result = new Message(messages.BatchId);
+                        if (_lazyParseEntry)
+                        {
+                            // byteString
+                            result.RawEntries = messages.Messages_.ToList();
+                        }
+                        else
+                        {
+                            foreach (var byteString in messages.Messages_)
+                            {
+                                result.Entries.Add(Entry.Parser.ParseFrom(byteString));
+                            }
+                        }
+
+                        return result;
+                    }
                 case PacketType.Ack:
-                {
-                    var ack = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
-                    throw new CanalClientException($"something goes wrong with reason:{ack.ErrorMessage}");
-                }
+                    {
+                        var ack = Com.Alibaba.Otter.Canal.Protocol.Ack.Parser.ParseFrom(p.Body);
+                        throw new CanalClientException($"something goes wrong with reason:{ack.ErrorMessage}");
+                    }
                 default:
-                {
-                    throw new CanalClientException($"unexpected packet type: {p.Type}");
-                }
+                    {
+                        throw new CanalClientException($"unexpected packet type: {p.Type}");
+                    }
             }
         }
 

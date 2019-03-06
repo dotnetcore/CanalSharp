@@ -19,7 +19,7 @@ namespace CanalSharp.Client.Impl
     public class CanalConnectors
     {
         /// <summary>
-        /// 创建单链接的客户端链接
+        /// To create a single-link client connection
         /// </summary>
         /// <param name="address"></param>
         /// <param name="destination"></param>

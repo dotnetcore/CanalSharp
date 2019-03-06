@@ -24,7 +24,7 @@ namespace CanalSharp.Protocol.Position
         public T Start { get; set; }
 
         /// <summary>
-        /// add by ljh at 2012-09-05，用于记录一个可被ack的位置，保证每次提交到cursor中的位置是一个完整事务的结束
+        /// To recode the position that can be acked, to ensure that each time the position submitted to cursor is the end of a full transaction.
         /// </summary>
         public T Ack { get; set; }
 
@@ -67,7 +67,7 @@ namespace CanalSharp.Protocol.Position
                 return false;
             }
 
-            var other = (PositionRange<T>) obj;
+            var other = (PositionRange<T>)obj;
             if (Ack == null)
             {
                 if (other.Ack != null)

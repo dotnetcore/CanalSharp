@@ -17,7 +17,7 @@
 namespace CanalSharp.Client.Impl.Running
 {
     /// <summary>
-    /// client running状态信息
+    /// client running status Information
     /// </summary>
     public class ClientRunningData
     {

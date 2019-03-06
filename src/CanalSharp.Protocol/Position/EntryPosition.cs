@@ -21,7 +21,7 @@ namespace CanalSharp.Protocol.Position
     public class EntryPosition : TimePosition
     {
         public const int EVENTIDENTITY_SEGMENT = 3;
-        public const char EVENTIDENTITY_SPLIT = (char) 5;
+        public const char EVENTIDENTITY_SPLIT = (char)5;
 
         public bool Included => false;
 
@@ -30,7 +30,7 @@ namespace CanalSharp.Protocol.Position
         public long? Position { get; set; }
 
         /// <summary>
-        /// 记录一下位点对应的serverId
+        /// To recode servce id of the entry position
         /// </summary>
         public long? ServerId { get; set; }
 
@@ -89,7 +89,7 @@ namespace CanalSharp.Protocol.Position
                 return false;
             }
 
-            var other = (EntryPosition) obj;
+            var other = (EntryPosition)obj;
             if (JournalName == null)
             {
                 if (other.JournalName != null)
@@ -137,7 +137,7 @@ namespace CanalSharp.Protocol.Position
 
             if (val != 0) return val;
             if (Position == null) return val;
-            if (o.Position != null) return (int) (Position - o.Position);
+            if (o.Position != null) return (int)(Position - o.Position);
             return val;
         }
     }
