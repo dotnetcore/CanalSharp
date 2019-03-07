@@ -17,12 +17,12 @@
 namespace CanalSharp.Common.Alarm
 {
     /// <summary>
-    ///  canal报警处理机制
+    ///  Canal alarm processing mechanism
     /// </summary>
     public interface ICanalAlarmHandler
     {
         /// <summary>
-        /// 发送对应destination的报警
+        /// Send an alarm for the specified destination
         /// </summary>
         /// <param name="destination"></param>
         /// <param name="msg"></param>

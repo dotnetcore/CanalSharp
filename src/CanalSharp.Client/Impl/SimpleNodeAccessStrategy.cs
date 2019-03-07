@@ -22,7 +22,7 @@ using System.Net;
 namespace CanalSharp.Client.Impl
 {
     /// <summary>
-    /// 简单版本的 node 访问实现
+    /// Simple node accessing strategy
     /// </summary>
     public class SimpleNodeAccessStrategy : ICanalNodeAccessStrategy
     {

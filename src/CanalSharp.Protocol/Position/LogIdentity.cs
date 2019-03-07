@@ -20,10 +20,10 @@ namespace CanalSharp.Protocol.Position
 {
     public class LogIdentity : Position
     {
-        // 链接服务器的地址
+        // Source address
         public SocketAddress SourceAddress { get; }
 
-        // 对应的slaveId
+        // Specific slave id
         public long? SlaveId { get; }
 
         public LogIdentity()
@@ -50,7 +50,7 @@ namespace CanalSharp.Protocol.Position
             if (this == obj) return true;
             if (obj == null) return false;
             if (this != obj) return false;
-            var other = (LogIdentity) obj;
+            var other = (LogIdentity)obj;
             if (SlaveId == null)
             {
                 if (other.SlaveId != null) return false;

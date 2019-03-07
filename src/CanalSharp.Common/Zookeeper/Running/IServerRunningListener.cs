@@ -19,22 +19,22 @@ namespace CanalSharp.Common.Zookeeper.Running
     public interface IServerRunningListener
     {
         /**
-        * 启动时回调做点事情
+        * Trigger callback when starting.
         */
         void ProcessStart();
 
         /**
-         * 关闭时回调做点事情
+         * Trigger callback when stopped.
          */
         void ProcessStop();
 
         /**
-         * 触发现在轮到自己做为active，需要载入上一个active的上下文数据
+         * Trigger callback when this round becomes Active, needs to load the previous round of Active context.
          */
         void ProcessActiveEnter();
 
         /**
-         * 触发一下当前active模式失败
+         * Trigger callback at the end of this round of Active.
          */
         void ProcessActiveExit();
     }

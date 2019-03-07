@@ -21,7 +21,7 @@ namespace CanalSharp.Common
     public abstract class AbstractCanalLifeCycle : ICanalLifeCycle
     {
         /// <summary>
-        /// 是否处于运行中
+        /// Whether Canal is running or not.
         /// </summary>
         protected volatile bool Running;
 
