@@ -83,9 +83,10 @@ var connector = CanalConnectors.NewSingleConnector("127.0.0.1", 11111, destinati
 connector.Connect();
 //订阅，同时传入Filter，如果不传则以Canal的Filter为准。Filter是一种过滤规则，通过该规则的表数据变更才会传递过来
 connector.Subscribe(".*\\..*");
-//获取数据但是不需要发送Ack来表示消费成功
-connector.Get(batchSize);
+
 //获取数据并且需要发送Ack表示消费成功
+connector.Get(batchSize);
+//获取数据但是不需要发送Ack来表示消费成功
 connector.GetWithoutAck(batchSize);
 ````
 
