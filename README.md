@@ -6,7 +6,7 @@
 
 CanalSharp is a .NET Client of alibaba's open source component `Canal`,and it provides .NET developer a much easier way to use Canal.
 
- `Canal` is a incremental Publish&Subscription component based on mysql's `binlog`.To learn more a bout Cancal,please visit ` https://github.com/alibaba/canal/wiki`
+ `Canal` is a incremental Publish&Subscription component based on mysql's `binlog`.To learn more a bout Cancal,please visit [alibaba/canal/wiki](https://github.com/alibaba/canal/wiki)
 
  log based incremental pub&sub model  can be applied to  many business cases:
 
