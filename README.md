@@ -2,6 +2,8 @@
 
 [![Build Status](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/badge/icon)](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/)
 
+Tips: CanalSharp is refactoring to fit the latest version of canal.
+
 ## What is CanalSharp?
 
 CanalSharp is a .NET Client of alibaba's open source component `Canal`,and it provides .NET developer a much easier way to use Canal.
