@@ -2,7 +2,7 @@
 
 [![Build Status](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/badge/icon)](https://ci2.xcmaster.com/job/CanalSharpAuto/job/master/)
 
-Tips: CanalSharp is refactoring to fit the latest version of canal.
+Tips: CanalSharp is refactoring to fit the latest version of canal(https://github.com/dotnetcore/CanalSharp/tree/dev).
 
 ## What is CanalSharp?
 
