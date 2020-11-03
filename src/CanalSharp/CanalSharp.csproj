@@ -3,6 +3,10 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>canal,binlog,mysql,cdc</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Label="Document">
@@ -16,6 +20,7 @@
     <RepositoryUrl>https://github.com/dotnetcore/CanalSharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/dotnetcore/CanalSharp</PackageProjectUrl>
+    <Description>This is a completely rewritten version of the code. Please read the documentation and update your code</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +32,13 @@
 
   <ItemGroup>
     <Folder Include="Connections\HA\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 ## 重构进度
 
-目前重构的版本已经完全覆盖旧版本，且性能更高，代码更优美，实现了旧版本未实现的部分功能。
+目前重构的版本已经完全覆盖旧版本，且性能更高，代码更优美，实现了旧版本未实现的部分功能。支持最新的 Canal
 
 English README.md  Will be provided after the refactoring is complete.
 
