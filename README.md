@@ -1,45 +1,47 @@
 # CanalSharp
 
-## ÖØ¹¹½ø¶È
+## é‡æ„è¿›åº¦
 
-Ä¿Ç°ÖØ¹¹µÄ°æ±¾ÒÑ¾­ÍêÈ«¸²¸Ç¾É°æ±¾£¬ÇÒĞÔÄÜ¸ü¸ß£¬´úÂë¸üÓÅÃÀ£¬ÊµÏÖÁË¾É°æ±¾Î´ÊµÏÖµÄ²¿·Ö¹¦ÄÜ¡£
+ç›®å‰é‡æ„çš„ç‰ˆæœ¬å·²ç»å®Œå…¨è¦†ç›–æ—§ç‰ˆæœ¬ï¼Œä¸”æ€§èƒ½æ›´é«˜ï¼Œä»£ç æ›´ä¼˜ç¾ï¼Œå®ç°äº†æ—§ç‰ˆæœ¬æœªå®ç°çš„éƒ¨åˆ†åŠŸèƒ½ã€‚
 
 English README.md  Will be provided after the refactoring is complete.
 
+æ—§ç‰ˆæœ¬ä»£ç ï¼šhttps://github.com/dotnetcore/CanalSharp/tree/release/0.2.0
+
 | Task                | Status   |
 | ------------------- | ------ |
-| protobuf 3 Ğ­ÒéÉú³É | ÒÑÍê³É |
-| ¶Ô½Ó Canal          | ÒÑÍê³É |
-| Êı¾İ¶©ÔÄ·â×°        |        |
-| ¼¯ÈºÖ§³Ö(ÈÈ±¸)      |        |
-| Êı¾İ·¢ËÍµ½Kafka     |        |
-| Êı¾İ·¢ËÍµ½Redis     |        |
+| protobuf 3 åè®®ç”Ÿæˆ | å·²å®Œæˆ |
+| å¯¹æ¥ Canal          | å·²å®Œæˆ |
+| æ•°æ®è®¢é˜…å°è£…        |        |
+| é›†ç¾¤æ”¯æŒ(çƒ­å¤‡)      |        |
+| æ•°æ®å‘é€åˆ°Kafka     |        |
+| æ•°æ®å‘é€åˆ°Redis     |        |
 
-## ¿ìËÙÈëÃÅ
+## å¿«é€Ÿå…¥é—¨
 
->ÏÈ¾öÌõ¼ş£º°²×°Java»·¾³ºÍĞèÒªÊ¹ÓÃµÄÊı¾İ¿â¿ªÆôbinlog
+>å…ˆå†³æ¡ä»¶ï¼šå®‰è£…Javaç¯å¢ƒå’Œéœ€è¦ä½¿ç”¨çš„æ•°æ®åº“å¼€å¯binlog
 
-### 1.ÔËĞĞ Canal Server
+### 1.è¿è¡Œ Canal Server
 
-£¨1£©ÏÂÔØ×îĞÂµÄ Canal Server https://github.com/alibaba/canal/releases/latest, ÏÂÔØ `canal.deployer-°æ±¾ºÅ-SNAPSHOT.tar.gz` ÎÄ¼ş
+ï¼ˆ1ï¼‰ä¸‹è½½æœ€æ–°çš„ Canal Server https://github.com/alibaba/canal/releases/latest, ä¸‹è½½ `canal.deployer-ç‰ˆæœ¬å·-SNAPSHOT.tar.gz` æ–‡ä»¶
 
-£¨2£©ÅäÖÃ
+ï¼ˆ2ï¼‰é…ç½®
 
-±à¼­ÎÄ¼ş `conf/example/instance.properties`
+ç¼–è¾‘æ–‡ä»¶ `conf/example/instance.properties`
 
-ÉèÖÃ MySql µØÖ·£º`canal.instance.master.address=`
+è®¾ç½® MySql åœ°å€ï¼š`canal.instance.master.address=`
 
-ÉèÖÃ MySql ÓÃ»§£º`canal.instance.dbUsername=`
+è®¾ç½® MySql ç”¨æˆ·ï¼š`canal.instance.dbUsername=`
 
-ÉèÖÃ MySql ÃÜÂë£º`canal.instance.dbPassword=`
+è®¾ç½® MySql å¯†ç ï¼š`canal.instance.dbPassword=`
 
-£¨3£©ÔËĞĞ
-  ½øÈë `bin` Ä¿Â¼£¬¸ù¾İÄãµÄÏµÍ³Ñ¡Ôñ½Å±¾ÔËĞĞ¡£
+ï¼ˆ3ï¼‰è¿è¡Œ
+  è¿›å…¥ `bin` ç›®å½•ï¼Œæ ¹æ®ä½ çš„ç³»ç»Ÿé€‰æ‹©è„šæœ¬è¿è¡Œã€‚
 
-### 2.Ê¹ÓÃ
+### 2.ä½¿ç”¨
 
 ````csharp
-//³õÊ¼»¯ÈÕÖ¾
+//åˆå§‹åŒ–æ—¥å¿—
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
@@ -48,19 +50,19 @@ using var loggerFactory = LoggerFactory.Create(builder =>
         .AddConsole();
 });
 
-//´´½¨Á¬½Ó
-var conn=new SimpleCanalConnection(new SimpleCanalConnectionOptions(Canal Server µØÖ·,¶Ë¿Ú Ä¬ÈÏ 11111,ClientId ×Ô¶¨Òå), loggerFactory.CreateLogger<SimpleCanalConnection>());
+//åˆ›å»ºè¿æ¥
+var conn=new SimpleCanalConnection(new SimpleCanalConnectionOptions(Canal Server åœ°å€,ç«¯å£ é»˜è®¤ 11111,ClientId è‡ªå®šä¹‰), loggerFactory.CreateLogger<SimpleCanalConnection>());
 
-//Á¬½Óµ½ Canal Server
+//è¿æ¥åˆ° Canal Server
 await conn.ConnectAsync();
-//¶©ÔÄĞèÒª´¦ÀíµÄÊı¾İ
+//è®¢é˜…éœ€è¦å¤„ç†çš„æ•°æ®
 await conn.SubscribeAsync();
 while (true)
 {
-    //»ñÈ¡Êı¾İ
+    //è·å–æ•°æ®
     var msg = await conn.GetAsync(1024);
     await Task.Delay(300);
 }
 ````
 
->¸üÏêÏ¸µÄÎÄµµ½«ÔÚÖØ¹¹Íê³ÉºóÌá¹©
+>æ›´è¯¦ç»†çš„æ–‡æ¡£å°†åœ¨é‡æ„å®Œæˆåæä¾›
