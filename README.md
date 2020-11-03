@@ -1,5 +1,7 @@
 # CanalSharp
 
+[![Latest version](https://img.shields.io/nuget/v/CanalSharp.svg)](https://www.nuget.org/packages/CanalSharp/) 
+
 ## 重构进度
 
 目前重构的版本已经完全覆盖旧版本，且性能更高，代码更优美，实现了旧版本未实现的部分功能。支持最新的 Canal
@@ -40,6 +42,13 @@ English README.md  Will be provided after the refactoring is complete.
 
 ### 2.使用
 
+从 Nuget 安装
+
+````shell
+Install-Package CanalSharp
+````
+
+代码
 ````csharp
 //初始化日志
 using var loggerFactory = LoggerFactory.Create(builder =>
