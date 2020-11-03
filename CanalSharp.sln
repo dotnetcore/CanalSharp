@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Solution Items", "01 Solution Items", "{9F45639B-A9FA-4F6A-94EC-0D251FA3285D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 test", "03 test", "{BD70CDB7-94E9-4621-B702-DC04DB9D59EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 src", "02 src", "{4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 sample", "04 sample", "{A4650FA0-4725-4956-90D3-F462F3C7474F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.UnitTest", "test\CanalSharp.UnitTest\CanalSharp.UnitTest.csproj", "{1DFD44A5-2020-444F-B229-C5A6320A8DE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp", "src\CanalSharp\CanalSharp.csproj", "{25BBA486-B374-4466-A565-507171898FBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{D21B3144-16F2-4CED-8E3F-627C267A1635}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+		build\version.props = build\version.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanalSharp.SimpleApp", "sample\CanalSharp.SimpleApp\CanalSharp.SimpleApp.csproj", "{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DFD44A5-2020-444F-B229-C5A6320A8DE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DFD44A5-2020-444F-B229-C5A6320A8DE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DFD44A5-2020-444F-B229-C5A6320A8DE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DFD44A5-2020-444F-B229-C5A6320A8DE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BBA486-B374-4466-A565-507171898FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25BBA486-B374-4466-A565-507171898FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25BBA486-B374-4466-A565-507171898FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25BBA486-B374-4466-A565-507171898FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1DFD44A5-2020-444F-B229-C5A6320A8DE0} = {BD70CDB7-94E9-4621-B702-DC04DB9D59EF}
+		{25BBA486-B374-4466-A565-507171898FBF} = {4B78B79B-7EBE-405E-9BE3-3A59FFAD1910}
+		{D21B3144-16F2-4CED-8E3F-627C267A1635} = {9F45639B-A9FA-4F6A-94EC-0D251FA3285D}
+		{BDFF31D3-BA2D-4B67-A805-E864A79A04AD} = {A4650FA0-4725-4956-90D3-F462F3C7474F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD9B9146-8418-4F80-A666-9B47BE4F9C9C}
+	EndGlobalSection
+EndGlobal

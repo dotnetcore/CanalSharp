@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../build/common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Document">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <Product>CanalSharp</Product>
+    <Authors>stulzq,withlin</Authors>
+    <Owners>stulzq,withlin</Owners>
+    <RepositoryUrl>https://github.com/dotnetcore/CanalSharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/dotnetcore/CanalSharp</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BeetleX" Version="1.5.4" />
+    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(FRAMEWORK_DEPENDENCY_VERSION)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Connections\HA\" />
+  </ItemGroup>
+
+</Project>

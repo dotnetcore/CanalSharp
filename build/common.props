@@ -1,0 +1,24 @@
+<Project>
+  <Import Project="version.props" />
+
+  <PropertyGroup Label="Document">
+    <WarningsAsErrors>NU1605;NU1701</WarningsAsErrors>
+    <NoWarn>NU1701;1701;1702;1705;1591;CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="logs\**" />
+    <None Remove="*.DotSettings" />
+  </ItemGroup>
+
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <ItemGroup>
+      <ProjectIncludeFile Include="*.json;*.pfx;Dockerfile" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ProjectIncludeFile)" Condition="Exists(@(ProjectIncludeFile))" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
+  </Target>
+
+</Project>
