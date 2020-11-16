@@ -1,8 +1,8 @@
 ﻿namespace CanalSharp.Connections
 {
-    public class ClusterCanalConnectionOptions : CanalConnectionOptionsBase
+    public class ClusterCanalOptions : CanalOptionsBase
     {
-        public ClusterCanalConnectionOptions(string zkAddress, string clientId)
+        public ClusterCanalOptions(string zkAddress, string clientId)
         {
             ClientId = clientId;
             ZkAddress = zkAddress;

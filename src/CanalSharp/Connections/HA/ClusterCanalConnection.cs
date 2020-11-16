@@ -16,7 +16,7 @@ namespace CanalSharp.Connections
     /// </summary>
     public class ClusterCanalConnection : ICanalConnection
     {
-        private readonly ClusterCanalConnectionOptions _options;
+        private readonly ClusterCanalOptions _options;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<ClusterCanalConnection> _logger;
         // ReSharper disable once InconsistentNaming
@@ -28,7 +28,7 @@ namespace CanalSharp.Connections
         private SimpleCanalConnection _currentConn;
         private ZkConnection _zk;
 
-        public ClusterCanalConnection([NotNull] ClusterCanalConnectionOptions options, ILoggerFactory loggerFactory)
+        public ClusterCanalConnection([NotNull] ClusterCanalOptions options, ILoggerFactory loggerFactory)
         {
             _options = options;
             _loggerFactory = loggerFactory;
@@ -202,10 +202,10 @@ namespace CanalSharp.Connections
             return _currentConn.GetWithoutAckAsync(fetchSize, timeout);
         }
 
-        private SimpleCanalConnectionOptions CopyOptions(CanalRunningInfo runningInfo)
+        private SimpleCanalOptions CopyOptions(CanalRunningInfo runningInfo)
         {
             var tmpArr = runningInfo.Address.Split(":");
-            var op = new SimpleCanalConnectionOptions(tmpArr[0], int.Parse(tmpArr[1]), _options.ClientId)
+            var op = new SimpleCanalOptions(tmpArr[0], int.Parse(tmpArr[1]), _options.ClientId)
             {
                 Destination = _options.Destination,
                 IdleTimeout = _options.IdleTimeout,

@@ -1,6 +1,6 @@
 ﻿namespace CanalSharp.Connections
 {
-    public class CanalConnectionOptionsBase
+    public class CanalOptionsBase
     {
         /// <summary>
         /// Canal Destination(Optional, default value is 'example')

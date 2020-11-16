@@ -1,8 +1,8 @@
 ﻿namespace CanalSharp.Connections
 {
-    public class SimpleCanalConnectionOptions: CanalConnectionOptionsBase
+    public class SimpleCanalOptions: CanalOptionsBase
     {
-        public SimpleCanalConnectionOptions(string host, int port, string clientId)
+        public SimpleCanalOptions(string host, int port, string clientId)
         {
             Host = host;
             Port = port;

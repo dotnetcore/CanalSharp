@@ -17,13 +17,13 @@ namespace CanalSharp.Connections
     /// </summary>
     public class SimpleCanalConnection : ICanalConnection
     {
-        private readonly SimpleCanalConnectionOptions _options;
+        private readonly SimpleCanalOptions _options;
         private readonly ILogger _logger;
         private TcpClient _client;
 
         public ConnectionState State { get; internal set; }
 
-        public SimpleCanalConnection([NotNull] SimpleCanalConnectionOptions options, ILogger<SimpleCanalConnection> logger)
+        public SimpleCanalConnection([NotNull] SimpleCanalOptions options, ILogger<SimpleCanalConnection> logger)
         {
             Check.NotNull(options, nameof(options));
 

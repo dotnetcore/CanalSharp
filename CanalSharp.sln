@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{D21B3144
 		build\version.props = build\version.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanalSharp.SimpleApp", "sample\CanalSharp.SimpleApp\CanalSharp.SimpleApp.csproj", "{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanalSharp.SimpleApp", "sample\CanalSharp.SimpleApp\CanalSharp.SimpleApp.csproj", "{BDFF31D3-BA2D-4B67-A805-E864A79A04AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

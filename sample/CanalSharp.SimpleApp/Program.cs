@@ -27,8 +27,7 @@ namespace CanalSharp.SimpleApp
                     .AddConsole();
             });
             _logger = loggerFactory.CreateLogger<Program>();
-            var conn = new ClusterCanalConnection(
-                new ClusterCanalConnectionOptions("localhost:2181", "12350") { UserName = "canal", Password = "canal" },
+            var conn = new ClusterCanalConnection( new ClusterCanalOptions("localhost:2181", "12350") { UserName = "canal", Password = "canal" },
                 loggerFactory);
             await conn.ConnectAsync();
             await conn.SubscribeAsync();
@@ -59,7 +58,7 @@ namespace CanalSharp.SimpleApp
                     .AddConsole();
             });
             _logger = loggerFactory.CreateLogger<Program>();
-            var conn = new SimpleCanalConnection(new SimpleCanalConnectionOptions("127.0.0.1", 11111, "12349") { UserName = "canal", Password = "canal" }, loggerFactory.CreateLogger<SimpleCanalConnection>());
+            var conn = new SimpleCanalConnection(new SimpleCanalOptions("127.0.0.1", 11111, "12349") { UserName = "canal", Password = "canal" }, loggerFactory.CreateLogger<SimpleCanalConnection>());
             await conn.ConnectAsync();
             await conn.SubscribeAsync();
             await conn.RollbackAsync(0);
