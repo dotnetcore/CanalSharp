@@ -46,6 +46,16 @@ namespace CanalSharp.Connections
             ZK_CLIENT_RUNNING_NODE = $"/otter/canal/destinations/{_options.Destination}/{_options.ClientId}/running";
         }
 
+        public ConnectionState State => GetState();
+
+        private ConnectionState GetState()
+        {
+            return _currentConn?.State ?? ConnectionState.Closed;
+        }
+        /// <summary>
+        /// Reconnect to canal server.
+        /// </summary>
+        /// <returns></returns>
         public async Task ReConnectAsync()
         {
             await DisConnectAsync();
@@ -79,6 +89,10 @@ namespace CanalSharp.Connections
             }
         }
 
+        /// <summary>
+        /// Connect to canal server.
+        /// </summary>
+        /// <returns></returns>
         public async Task ConnectAsync()
         {
             //get canal address from zk
@@ -101,7 +115,7 @@ namespace CanalSharp.Connections
             _logger.LogInformation("Ready to use!");
         }
 
-        public async Task GetZkLockAsync(CanalClientRunningInfo runningInfo, bool waiting = false)
+        private async Task GetZkLockAsync(CanalClientRunningInfo runningInfo, bool waiting = false)
         {
             var times = 0;
             while (waiting && times < 60)
@@ -215,17 +229,30 @@ namespace CanalSharp.Connections
             }
         }
 
+        /// <summary>
+        /// Subscribe to the data that needs to be received. Support repeat subscription to refresh filter setting.
+        /// </summary>
+        /// <param name="filter">Subscribe filter(Optional, default value is '.*\\..*')</param>
+        /// <returns></returns>
         public Task SubscribeAsync(string filter = ".*\\..*")
         {
             _lastSubFilter = filter;
             return _currentConn.SubscribeAsync(filter);
         }
 
+        /// <summary>
+        /// UnSubscribe. If you need to unsubscribe, you should stop receiving data first.
+        /// </summary>
+        /// <param name="filter">UnSubscribe filter(Optional, default value is '.*\\..*')</param>
+        /// <returns></returns>
         public Task UnSubscribeAsync(string filter = ".*\\..*")
         {
             return _currentConn.UnSubscribeAsync(filter);
         }
 
+        /// <summary>
+        /// Close connection
+        /// </summary>  
         public async Task DisConnectAsync()
         {
             if (_currentConn != null)
@@ -244,6 +271,9 @@ namespace CanalSharp.Connections
             _logger.LogInformation("Disconnect success.");
         }
 
+        /// <summary>
+        /// Disconnect TCP connection and dispose 
+        /// </summary>
         public async ValueTask DisposeAsync()
         {
             _lastSubFilter = null;
@@ -251,32 +281,66 @@ namespace CanalSharp.Connections
 
         }
 
+        /// <summary>
+        /// Ack has received data.
+        /// </summary>
+        /// <param name="batchId"></param>
+        /// <returns></returns>
         public Task AckAsync(long batchId)
         {
             return _currentConn.AckAsync(batchId);
         }
 
+        /// <summary>
+        /// Roll back consumption progress
+        /// </summary>
+        /// <param name="batchId"></param>
+        /// <returns></returns>
         public Task RollbackAsync(long batchId)
         {
             return _currentConn.RollbackAsync(batchId);
         }
 
+        /// <summary>
+        /// Fetch data from Canal Server, have auto Ack and no timeout
+        /// </summary>
+        /// <param name="fetchSize">Fetch data Size. If you set the value to null or less than or equal to 0, the value will be reset to 1000. </param>
+        /// <returns></returns>
         public Task<Message> GetAsync(int fetchSize)
         {
             return _currentConn.GetAsync(fetchSize);
         }
 
+        /// <summary>
+        /// Fetch data from Canal Server, have auto Ack
+        /// </summary>
+        /// <param name="fetchSize">Fetch data Size. If you set the value to null or less than or equal to 0, the value will be reset to 1000. </param>
+        /// <param name="timeout">Fetch data timeout. If you set the value to null or less than or equal to 0, the value will be reset to -1. -1 means no timeout.</param>
+        /// <param name="timeOutUnit">Timeout unit. Default value is <see cref="FetchDataTimeoutUnitType.Millisecond"/>.</param>
+        /// <returns></returns>
         public Task<Message> GetAsync(int fetchSize, long? timeout,
             FetchDataTimeoutUnitType timeOutUnit = FetchDataTimeoutUnitType.Millisecond)
         {
             return _currentConn.GetAsync(fetchSize, timeout);
         }
 
+        /// <summary>
+        /// Fetch data from Canal Server, but have no auto Ack and no timeout
+        /// </summary>
+        /// <param name="fetchSize">Fetch data Size. If you set the value to null or less than or equal to 0, the value will be reset to 1000. </param>
+        /// <returns></returns>
         public Task<Message> GetWithoutAckAsync(int fetchSize)
         {
             return _currentConn.GetWithoutAckAsync(fetchSize);
         }
 
+        /// <summary>
+        /// Fetch data from Canal Server, but have no auto Ack
+        /// </summary>
+        /// <param name="fetchSize">Fetch data Size. If you set the value to null or less than or equal to 0, the value will be reset to 1000. </param>
+        /// <param name="timeout">Fetch data timeout. If you set the value to null or less than or equal to 0, the value will be reset to -1. -1 means no timeout.</param>
+        /// <param name="timeOutUnit">Timeout unit. Default value is <see cref="FetchDataTimeoutUnitType.Millisecond"/>.</param>
+        /// <returns></returns>
         public Task<Message> GetWithoutAckAsync(int fetchSize, long? timeout,
             FetchDataTimeoutUnitType timeOutUnit = FetchDataTimeoutUnitType.Millisecond)
         {
