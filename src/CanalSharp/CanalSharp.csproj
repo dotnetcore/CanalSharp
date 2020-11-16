@@ -24,14 +24,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BeetleX" Version="1.5.4" />
+    <PackageReference Include="BeetleX" Version="1.5.5.3" />
     <PackageReference Include="Google.Protobuf" Version="3.13.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(FRAMEWORK_DEPENDENCY_VERSION)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Connections\HA\" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <!-- <PackageReference Include="NZookeeper" Version="0.1.0" /> -->
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +38,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NZookeeper\src\NZookeeper\NZookeeper.csproj" />
   </ItemGroup>
 
 </Project>

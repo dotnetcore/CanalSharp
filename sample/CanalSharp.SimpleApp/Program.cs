@@ -13,6 +13,12 @@ namespace CanalSharp.SimpleApp
         private static ILogger _logger;
         static async Task Main(string[] args)
         {
+            // await SimpleConn();
+            await ClusterConn();
+        }
+
+        static async Task ClusterConn()
+        {
             using var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder
@@ -21,9 +27,42 @@ namespace CanalSharp.SimpleApp
                     .AddConsole();
             });
             _logger = loggerFactory.CreateLogger<Program>();
-            var conn=new SimpleCanalConnection(new SimpleCanalConnectionOptions("127.0.0.1",11111,"12349"), loggerFactory.CreateLogger<SimpleCanalConnection>());
+            var conn = new ClusterCanalConnection(
+                new ClusterCanalConnectionOptions("localhost:2181", "12350") { UserName = "canal", Password = "canal" },
+                loggerFactory);
             await conn.ConnectAsync();
             await conn.SubscribeAsync();
+            await conn.RollbackAsync(0);
+            while (true)
+            {
+                try
+                {
+                    var msg = await conn.GetAsync(1024);
+                    PrintEntry(msg.Entries);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e,"Error.");
+                    await conn.ReConnectAsync();
+                }
+
+            }
+        }
+
+        static async Task SimpleConn()
+        {
+            using var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter("Microsoft", LogLevel.Debug)
+                    .AddFilter("System", LogLevel.Information)
+                    .AddConsole();
+            });
+            _logger = loggerFactory.CreateLogger<Program>();
+            var conn = new SimpleCanalConnection(new SimpleCanalConnectionOptions("127.0.0.1", 11111, "12349") { UserName = "canal", Password = "canal" }, loggerFactory.CreateLogger<SimpleCanalConnection>());
+            await conn.ConnectAsync();
+            await conn.SubscribeAsync();
+            await conn.RollbackAsync(0);
             while (true)
             {
                 var msg = await conn.GetAsync(1024);
@@ -89,4 +128,6 @@ namespace CanalSharp.SimpleApp
             }
         }
     }
+
+
 }

@@ -8,7 +8,7 @@ namespace CanalSharp.Connections
     /// <summary>
     /// Canal Connection basic interface
     /// </summary>
-    public interface ICanalConnection : IDisposable
+    public interface ICanalConnection : IAsyncDisposable
     {
         /// <summary>
         /// Connect to canal server.
@@ -30,7 +30,7 @@ namespace CanalSharp.Connections
         /// <returns></returns>
         Task UnSubscribeAsync(string filter = ".*\\..*");
 
-        void DisConnect();
+        Task DisConnectAsync();
 
         /// <summary>
         /// Ack has received data.

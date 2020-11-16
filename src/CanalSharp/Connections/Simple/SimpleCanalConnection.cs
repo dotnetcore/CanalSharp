@@ -18,10 +18,10 @@ namespace CanalSharp.Connections
     public class SimpleCanalConnection : ICanalConnection
     {
         private readonly SimpleCanalConnectionOptions _options;
-        private readonly ILogger<SimpleCanalConnection> _logger;
+        private readonly ILogger _logger;
         private TcpClient _client;
 
-        public ConnectionState State { get; private set; }
+        public ConnectionState State { get; internal set; }
 
         public SimpleCanalConnection([NotNull] SimpleCanalConnectionOptions options, ILogger<SimpleCanalConnection> logger)
         {
@@ -282,18 +282,19 @@ namespace CanalSharp.Connections
         /// <summary>
         /// Close connection
         /// </summary>
-        public void DisConnect()
+        public Task DisConnectAsync()
         {
             _client?.DisConnect();
             SetConnectionState(ConnectionState.Closed);
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Disconnect TCP connection and dispose 
         /// </summary>
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            DisConnect();
+            await DisConnectAsync();
             _client?.Dispose();
         }
 
