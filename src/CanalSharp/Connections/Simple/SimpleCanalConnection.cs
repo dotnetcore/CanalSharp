@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using BeetleX;
@@ -15,7 +16,7 @@ namespace CanalSharp.Connections
     /// <summary>
     /// Simple connection, suitable for business scenarios with small data traffic. High Availability is not supported.
     /// </summary>
-    public class SimpleCanalConnection : ICanalConnection
+    public class SimpleCanalConnection
     {
         private readonly SimpleCanalOptions _options;
         private readonly ILogger _logger;
@@ -45,7 +46,6 @@ namespace CanalSharp.Connections
             // _client.Socket.ReceiveTimeout = _options.SoTimeout;
             //Handshake
             ValidatePackageType(p, PacketType.Handshake, 1);
-
             var handshake = Handshake.Parser.ParseFrom(p.Body);
             var seed = handshake.Seeds;
 
@@ -334,6 +334,11 @@ namespace CanalSharp.Connections
                 }
             }
             return result;
+        }
+
+        internal EndPoint GetLocalEndPoint()
+        {
+            return _client.Socket.LocalEndPoint;
         }
 
         private void ValidatePackageType(Packet p, PacketType expectPacketType, int expectPacketVersion)

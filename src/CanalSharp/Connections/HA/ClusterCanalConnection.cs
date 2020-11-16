@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using CanalSharp.Connections.Enums;
@@ -7,35 +8,43 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NZookeeper;
+using NZookeeper.ACL;
 using NZookeeper.Enums;
+using NZookeeper.Node;
+using org.apache.zookeeper;
 
 namespace CanalSharp.Connections
 {
     /// <summary>
     /// Support canal server cluster and client cluster.
     /// </summary>
-    public class ClusterCanalConnection : ICanalConnection
+    public class ClusterCanalConnection
     {
         private readonly ClusterCanalOptions _options;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<ClusterCanalConnection> _logger;
+        private readonly TaskCompletionSource<int> _completionSource;
         // ReSharper disable once InconsistentNaming
-        private readonly string ZK_RUNNING_NODE;
+        private readonly string ZK_SERVER_RUNNING_NODE;
+        // ReSharper disable once InconsistentNaming
+        private readonly string ZK_CLIENT_RUNNING_NODE;
 
-        // For reconnection
+        // For reconnect
         private string _lastSubFilter;
         private bool _serverRunningNodeReCreated;
         private SimpleCanalConnection _currentConn;
         private ZkConnection _zk;
+        private CanalClientRunningInfo _clientRunningInfo;
 
         public ClusterCanalConnection([NotNull] ClusterCanalOptions options, ILoggerFactory loggerFactory)
         {
             _options = options;
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<ClusterCanalConnection>();
-            ZK_RUNNING_NODE = $"/otter/canal/destinations/{_options.Destination}/running";
+            _completionSource = new TaskCompletionSource<int>();
+            ZK_SERVER_RUNNING_NODE = $"/otter/canal/destinations/{_options.Destination}/running";
+            ZK_CLIENT_RUNNING_NODE = $"/otter/canal/destinations/{_options.Destination}/{_options.ClientId}/running";
         }
-
 
         public async Task ReConnectAsync()
         {
@@ -72,17 +81,78 @@ namespace CanalSharp.Connections
 
         public async Task ConnectAsync()
         {
-            await ConnectToZkAsync();
             //get canal address from zk
-            var nodeData = await _zk.GetDataAsync(ZK_RUNNING_NODE);
-            var runningInfo = JsonConvert.DeserializeObject<CanalRunningInfo>(Encoding.UTF8.GetString(nodeData));
+            await ConnectToZkAsync();
+            var nodeData = await _zk.GetDataAsync(ZK_SERVER_RUNNING_NODE);
+            var runningInfo = JsonConvert.DeserializeObject<CanalServerRunningInfo>(Encoding.UTF8.GetString(nodeData));
             _logger.LogInformation($"get canal address from zookeeper success: {runningInfo.Address}");
 
             //connect to canal
             _currentConn = new SimpleCanalConnection(CopyOptions(runningInfo), _loggerFactory.CreateLogger<SimpleCanalConnection>());
             await _currentConn.ConnectAsync();
-
             _serverRunningNodeReCreated = false;
+
+            var localIp = _currentConn.GetLocalEndPoint().ToString();
+            _clientRunningInfo = new CanalClientRunningInfo()
+            { Active = true, Address = localIp, ClientId = _options.ClientId };
+            _ = GetZkLockAsync(_clientRunningInfo);
+            await _completionSource.Task;
+
+            _logger.LogInformation("Ready to use!");
+        }
+
+        public async Task GetZkLockAsync(CanalClientRunningInfo runningInfo, bool waiting = false)
+        {
+            var times = 0;
+            while (waiting && times < 60)
+            {
+                await Task.Delay(1000);
+                times++;
+                _logger.LogWarning($"Waiting for get lock {times}-60...");
+            }
+
+            if (await _zk.NodeExistsAsync(ZK_CLIENT_RUNNING_NODE))
+            {
+                _logger.LogInformation($"Node {ZK_CLIENT_RUNNING_NODE} exits, get Zookeeper lock failed. Other instances are running.");
+                _logger.LogWarning("Waiting...");
+            }
+            else
+            {
+                try
+                {
+                    var clientNodeData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(runningInfo));
+
+                    var parentNode = ZK_CLIENT_RUNNING_NODE.Replace("/running", "");
+                    if (!await _zk.NodeExistsAsync(parentNode))
+                        await _zk.CreateNodeAsync(parentNode, null,
+                        new List<Acl>() { new Acl(AclPerm.All, AclScheme.World, AclId.World()) }, NodeType.Persistent);
+
+                    await _zk.CreateNodeAsync(ZK_CLIENT_RUNNING_NODE, clientNodeData,
+                        new List<Acl>() { new Acl(AclPerm.All, AclScheme.World, AclId.World()) }, NodeType.Ephemeral);
+                    await _zk.CreateNodeAsync(parentNode + "/" + runningInfo.Address, null,
+                        new List<Acl>() { new Acl(AclPerm.All, AclScheme.World, AclId.World()) }, NodeType.Ephemeral);
+                    await _zk.NodeExistsAsync(ZK_CLIENT_RUNNING_NODE);
+                    _completionSource.SetResult(0);
+                    _logger.LogInformation("Get zookeeper lock success.");
+                }
+                catch (KeeperException.NodeExistsException e)
+                {
+                    if (e.getPath() != ZK_CLIENT_RUNNING_NODE)
+                    {
+                        _logger.LogError(e, "Error during get lock.");
+                        Environment.Exit(-1);
+                    }
+
+                    _logger.LogInformation(
+                        $"Node {ZK_CLIENT_RUNNING_NODE} exits, get Zookeeper lock failed. Other instances are running.");
+                    _logger.LogWarning("Waiting...");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Exception in lock");
+                }
+            }
+
         }
 
         private async Task ConnectToZkAsync()
@@ -105,7 +175,7 @@ namespace CanalSharp.Connections
             var times = 0;
             while (times < 60)
             {
-                if (await _zk.NodeExistsAsync(ZK_RUNNING_NODE))
+                if (await _zk.NodeExistsAsync(ZK_SERVER_RUNNING_NODE))
                 {
                     return;
                 }
@@ -113,25 +183,36 @@ namespace CanalSharp.Connections
                 await Task.Delay(1000);
                 times++;
 
-                _logger.LogWarning($"Can not find node {ZK_RUNNING_NODE} on Zookeeper. Retrying... {times}");
+                _logger.LogWarning($"Can not find node {ZK_SERVER_RUNNING_NODE} on Zookeeper. Retrying... {times}");
             }
 
-            throw new CanalConnectionException($"Can not find node {ZK_RUNNING_NODE} on Zookeeper.");
+            throw new CanalConnectionException($"Can not find node {ZK_SERVER_RUNNING_NODE} on Zookeeper.");
         }
 
         private async Task Zk_OnWatch(ZkWatchEventArgs args)
         {
-            if (args.Path == ZK_RUNNING_NODE && args.EventType == WatchEventType.NodeCreated)
+            if (args.Path == ZK_SERVER_RUNNING_NODE && args.EventType == WatchEventType.NodeCreated)
             {
                 _serverRunningNodeReCreated = true;
-                _logger.LogInformation($"Zookeeper node {ZK_RUNNING_NODE} Created");
-            }
-            else if (args.Path == ZK_RUNNING_NODE && args.EventType == WatchEventType.NodeDeleted)
-            {
-                _logger.LogInformation($"Zookeeper node {ZK_RUNNING_NODE} Deleted");
+                _logger.LogInformation($"Server node {ZK_SERVER_RUNNING_NODE} Created");
             }
 
-            await _zk.NodeExistsAsync(ZK_RUNNING_NODE);
+            if (args.Path == ZK_SERVER_RUNNING_NODE && args.EventType == WatchEventType.NodeDeleted)
+            {
+                _logger.LogInformation($"Server node {ZK_SERVER_RUNNING_NODE} Deleted");
+            }
+
+            if (args.Path == ZK_CLIENT_RUNNING_NODE && args.EventType == WatchEventType.NodeDeleted)
+            {
+                _logger.LogInformation($"Client node {ZK_SERVER_RUNNING_NODE} Deleted");
+                _ = GetZkLockAsync(_clientRunningInfo, true);
+            }
+
+            if (_zk.Connected)
+            {
+                await _zk.NodeExistsAsync(ZK_SERVER_RUNNING_NODE);
+                await _zk.NodeExistsAsync(ZK_CLIENT_RUNNING_NODE);
+            }
         }
 
         public Task SubscribeAsync(string filter = ".*\\..*")
@@ -202,7 +283,7 @@ namespace CanalSharp.Connections
             return _currentConn.GetWithoutAckAsync(fetchSize, timeout);
         }
 
-        private SimpleCanalOptions CopyOptions(CanalRunningInfo runningInfo)
+        private SimpleCanalOptions CopyOptions(CanalServerRunningInfo runningInfo)
         {
             var tmpArr = runningInfo.Address.Split(":");
             var op = new SimpleCanalOptions(tmpArr[0], int.Parse(tmpArr[1]), _options.ClientId)
