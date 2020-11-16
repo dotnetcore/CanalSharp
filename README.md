@@ -15,7 +15,7 @@ English README.md  Will be provided after the refactoring is complete.
 | protobuf 3 协议生成 | 已完成 |
 | 对接 Canal          | 已完成 |
 | 数据订阅封装        |        |
-| 集群支持(热备)      |  进行中  |
+| 集群支持(热备)      |  已完成  |
 | 数据发送到Kafka     |        |
 | 数据发送到Redis     |        |
 
