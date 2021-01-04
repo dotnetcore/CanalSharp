@@ -39,7 +39,7 @@ module.exports = {
           }
         },
         nav: [
-          { text: 'Nested', link: '/get-start', ariaLabel: 'Nested' }
+          { text: 'Nested', link: '/quick-start', ariaLabel: 'Nested' }
         ],
         sidebar: [
           '/'
@@ -56,7 +56,7 @@ module.exports = {
           }
         },
         nav: [
-          { text: '嵌套', link: '/zh/get-start' }
+          { text: '快速入门', link: '/zh/quick-start' }
         ],
         sidebar: [
           '/zh/',

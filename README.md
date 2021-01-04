@@ -45,9 +45,9 @@ var msg = await conn.GetAsync(1024);
 
 ## 文档
 
-Github: [docs](https://github.com/dotnetcore/CanalSharp/tree/main/docs)
+Github: [docs](https://github.com/dotnetcore/CanalSharp/tree/main/docs/zh)
 
-WebSite: [Canal Document](https://github.com/dotnetcore/CanalSharp/tree/main/docs) (recommend)
+WebSite: [Canal Document](https://canalsharp.azurewebsites.net/zh/) (推荐)
 
 ## 问题反馈
 
@@ -70,4 +70,3 @@ WebSite: [Canal Document](https://github.com/dotnetcore/CanalSharp/tree/main/doc
 | 数据发送到Kafka     |        |
 | 数据发送到Redis     |        |
 
-## 
