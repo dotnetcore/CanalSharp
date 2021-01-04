@@ -1,14 +1,65 @@
 # CanalSharp
 
-[![Latest version](https://img.shields.io/nuget/v/CanalSharp.svg)](https://www.nuget.org/packages/CanalSharp/) 
+[![Latest version](https://img.shields.io/nuget/v/CanalSharp.svg)](https://www.nuget.org/packages/CanalSharp/) [![Member project of .NET Core Community](https://img.shields.io/badge/member%20project%20of-NCC-9e20c9.svg)](https://github.com/dotnetcore)
+
+CanalSharp 是阿里巴巴开源项目 mysql 数据库 binlog 的增量订阅&消费组件 Canal 的 **.NET 客户端**。在数据库中，**更改数据捕获**（**CDC**）是一组软件设计模式，用于确定和跟踪已更改的数据，以便可以使用已更改的数据来采取措施，Canal 便是 mysql 数据库的一种 cdc 组件。
+
+## 快速入门
+
+### 安装
+
+```shell
+Install-Package CanalSharp
+```
+
+### 初始化日志
+
+```csharp
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder
+        .AddFilter("Microsoft", LogLevel.Debug)
+        .AddFilter("System", LogLevel.Information)
+        .AddConsole();
+});
+var logger= loggerFactory.CreateLogger<SimpleCanalConnection>();
+```
+
+CanalSharp 使用 **Microsoft.Extensions.Logging.Abstractions** ，因为目前主流日志组件，如：nlog、serilog 等，全部支持此日志抽象接入，也就是说你可以通过安装 nlog、serilog 对其的适配，来使用它们，无论是 Console App 或则是 Web App。
+
+### 创建连接
+
+```csharp
+var conn=new SimpleCanalConnection(new SimpleCanalOptions("127.0.0.1",11111,1234),logger);
+//连接到 Canal Server
+await conn.ConnectAsync();
+//订阅
+await conn.SubscribeAsync();
+```
+
+### 获取数据
+
+```csharp
+var msg = await conn.GetAsync(1024);
+```
+
+## 文档
+
+Github: [docs](https://github.com/dotnetcore/CanalSharp/tree/main/docs)
+
+WebSite: [Canal Document](https://github.com/dotnetcore/CanalSharp/tree/main/docs) (recommend)
+
+## 问题反馈
+
+请通过 [Issue](https://github.com/dotnetcore/CanalSharp/issues/new) 向我们提交问题反馈，在提交时尽可能提供详细的信息，以便我们进行排查和解决。
+
+## 贡献代码
+
+如果你有一些好的想法，欢迎您提交 [Pull Request](https://github.com/dotnetcore/canalsharp/pulls) 或者 [Issue](https://github.com/dotnetcore/CanalSharp/issues/new)
 
 ## 重构进度
 
-目前重构的版本已经完全覆盖旧版本，且性能更高，代码更优美，实现了旧版本未实现的部分功能。支持最新的 Canal
-
-English README.md  Will be provided after the refactoring is complete.
-
-旧版本代码：https://github.com/dotnetcore/CanalSharp/tree/release/0.2.0
+目前重构的版本已经完全覆盖旧版本，且性能更高，代码更优美，实现了旧版本未实现的部分功能，支持最新的 Canal。
 
 | Task                | Status   |
 | ------------------- | ------ |
@@ -19,59 +70,4 @@ English README.md  Will be provided after the refactoring is complete.
 | 数据发送到Kafka     |        |
 | 数据发送到Redis     |        |
 
-## 快速入门
-
->先决条件：安装Java环境和需要使用的数据库开启binlog
-
-### 1.运行 Canal Server
-
-（1）下载最新的 Canal Server https://github.com/alibaba/canal/releases/latest, 下载 `canal.deployer-版本号-SNAPSHOT.tar.gz` 文件
-
-（2）配置
-
-编辑文件 `conf/example/instance.properties`
-
-设置 MySql 地址：`canal.instance.master.address=`
-
-设置 MySql 用户：`canal.instance.dbUsername=`
-
-设置 MySql 密码：`canal.instance.dbPassword=`
-
-（3）运行
-  进入 `bin` 目录，根据你的系统选择脚本运行。
-
-### 2.使用
-
-从 Nuget 安装
-
-````shell
-Install-Package CanalSharp
-````
-
-代码
-````csharp
-//初始化日志
-using var loggerFactory = LoggerFactory.Create(builder =>
-{
-    builder
-        .AddFilter("Microsoft", LogLevel.Debug)
-        .AddFilter("System", LogLevel.Information)
-        .AddConsole();
-});
-
-//创建连接
-var conn=new SimpleCanalConnection(new SimpleCanalConnectionOptions(Canal Server 地址,端口 默认 11111,ClientId 自定义), loggerFactory.CreateLogger<SimpleCanalConnection>());
-
-//连接到 Canal Server
-await conn.ConnectAsync();
-//订阅需要处理的数据
-await conn.SubscribeAsync();
-while (true)
-{
-    //获取数据
-    var msg = await conn.GetAsync(1024);
-    await Task.Delay(300);
-}
-````
-
->更详细的文档将在重构完成后提供
+## 
