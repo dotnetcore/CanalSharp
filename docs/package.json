@@ -1,0 +1,24 @@
+{
+  "name": "canalsharp.docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vuepress dev",
+    "build": "vuepress build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotnetcore/canalsharp.git"
+  },
+  "author": "Zhiqiang Li,withlin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dotnetcore/canalsharp/issues"
+  },
+  "homepage": "https://github.com/dotnetcore/canalsharp#readme",
+  "devDependencies": {
+    "vuepress": "^1.7.1"
+  }
+}
