@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BeetleX" Version="1.5.5.3" />
+    <PackageReference Include="BeetleX" Version="1.6.8" />
     <PackageReference Include="Google.Protobuf" Version="3.13.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
