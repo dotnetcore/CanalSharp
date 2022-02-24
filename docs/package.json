@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/dotnetcore/canalsharp#readme",
   "devDependencies": {
-    "vuepress": "^1.7.1"
+    "vuepress": "1.7.1"
   }
 }
