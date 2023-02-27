@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-5.7
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - canalsharp
+    volumes:
+      - ./mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - ./var/lib/mysql:/var/lib/mysql
+      - ./mysql/init/:/docker-entrypoint-initdb.d/
+
+networks:
+  canalsharp:
+    driver: bridge
+
