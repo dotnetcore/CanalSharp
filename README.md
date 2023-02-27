@@ -43,6 +43,14 @@ await conn.SubscribeAsync();
 var msg = await conn.GetAsync(1024);
 ```
 
+## 支持版本
+
+| CanalSharp | Canal |
+| ---------- | ----- |
+| 1.0.0      | 1.1.5 |
+
+Mysql 版本由 Canal 决定。
+
 ## 文档
 
 Github: [docs](https://github.com/dotnetcore/CanalSharp/tree/main/docs/zh)
