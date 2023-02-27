@@ -22,7 +22,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/dotnetcore/CanalSharp</PackageProjectUrl>
     <Description>Alibaba mysql database binlog subscription &amp; consumer components Canal's .NET client.</Description>
-    <Version>1.2.0-beta1</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

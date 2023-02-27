@@ -13,8 +13,8 @@ namespace CanalSharp.SimpleApp
         private static ILogger _logger;
         static async Task Main(string[] args)
         {
-            // await SimpleConn();
-            await ClusterConn();
+            await SimpleConn();
+            // await ClusterConn();
         }
 
         static async Task ClusterConn()
