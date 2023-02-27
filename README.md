@@ -69,12 +69,12 @@ WebSite: [Canal Document](https://canalsharp.azurewebsites.net/zh/) (推荐)
 
 目前重构的版本已经完全覆盖旧版本，且性能更高，代码更优美，实现了旧版本未实现的部分功能，支持最新的 Canal。
 
-| Task                | Status   |
-| ------------------- | ------ |
-| protobuf 3 协议生成 | 已完成 |
-| 对接 Canal          | 已完成 |
-| 数据订阅封装        |        |
-| 集群支持(Service 集群和 Client 集群)      |  已完成  |
-| 数据发送到Kafka     |        |
-| 数据发送到Redis     |        |
+| Task                | Status        |
+| ------------------- |---------------|
+| protobuf 3 协议生成 | 已完成           |
+| 对接 Canal          | 已完成           |
+| 数据订阅封装        | TODO          |
+| 集群支持(Service 集群和 Client 集群)      | 已完成           |
+| 数据发送到Kafka     | 直接通过 Canal 发送 |
+| 数据发送到Redis     | 直接通过 Canal 发送 |
 
