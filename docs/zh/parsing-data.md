@@ -98,7 +98,7 @@ Column 如其名，代表数据库中表的每一列的信息。
 ````csharp
 Column.Name = 'Name';
 Column.Value = 'Allen';
-Column.Value = True
+Column.Updated = True
 ````
 
 
