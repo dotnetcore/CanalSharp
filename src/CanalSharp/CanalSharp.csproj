@@ -7,7 +7,7 @@
     <PackageTags>canal,binlog,mysql,cdc</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReleaseNotes>Support Server/Client HA.</PackageReleaseNotes>
+    <PackageReleaseNotes>package update.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Label="Document">
@@ -22,7 +22,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/dotnetcore/CanalSharp</PackageProjectUrl>
     <Description>Alibaba mysql database binlog subscription &amp; consumer components Canal's .NET client.</Description>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
