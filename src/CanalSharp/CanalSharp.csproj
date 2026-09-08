@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NZookeeper" Version="1.0.0" />
+    <PackageReference Include="NZookeeper" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
